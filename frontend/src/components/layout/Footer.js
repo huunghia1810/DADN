@@ -13,7 +13,7 @@ function Footer() {
           <div className="copyright">
             © 2022, made with
             {<HeartFilled />} by
-            <a href="#pablo" className="font-weight-bold" target="_blank">
+            <a href="#dadn" className="font-weight-bold" target="_blank">
               BK - DADN team
             </a>
             for a better web.
@@ -24,7 +24,7 @@ function Footer() {
             <ul>
               <li className="nav-item">
                 <a
-                  href="#pablo"
+                  href="#dadn"
                   className="nav-link text-muted"
                   target="_blank"
                 >
@@ -33,7 +33,7 @@ function Footer() {
               </li>
               <li className="nav-item">
                 <a
-                  href="#pablo"
+                  href="#dadn"
                   className="nav-link text-muted"
                   target="_blank"
                 >
@@ -42,7 +42,7 @@ function Footer() {
               </li>
               <li className="nav-item">
                 <a
-                  href="#pablo"
+                  href="#dadn"
                   className="nav-link text-muted"
                   target="_blank"
                 >
@@ -51,7 +51,7 @@ function Footer() {
               </li>
               <li className="nav-item">
                 <a
-                  href="#pablo"
+                  href="#dadn"
                   className="nav-link pe-0 text-muted"
                   target="_blank"
                 >

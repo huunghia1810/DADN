@@ -1004,7 +1004,7 @@ button.ant-btn.bell strong {
 }
 
 .linechart h5 {
-  font-weight: 700;
+  /*font-weight: 700;*/
   margin: 0px;
 }
 .linechart {
@@ -3036,3 +3036,40 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
   path {
   fill: #8c8c8c;
 }
+
+/*---------------------------my custom css-----------------------------------*/
+.device-status-section {
+
+}
+
+.device-status-section .device-row {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.device-icon {
+  font-size: 140px;
+}
+
+/*.device-toggle {*/
+/*  height: 30px;*/
+/*  width: 50px;*/
+/*  margin-left: 5px;*/
+/*}*/
+/*.device-toggle.ant-switch-checked {*/
+/*    background-color: #52c41a;*/
+/*}*/
+/*.device-toggle.ant-switch-checked .ant-switch-handle {*/
+/*  left: calc(100% - 18px - 2px);*/
+/*}*/
+/*.device-toggle .ant-switch-handle {*/
+/*  left: -10px;*/
+/*}*/
+/*.device-toggle .ant-switch-handle {*/
+/*  top: 0;*/
+/*}*/
+/*.device-toggle .ant-switch-handle:before {*/
+/*  height: 30px;*/
+/*  width: 30px;*/
+/*  border-radius: 30px;*/
+/*}*/

@@ -2,9 +2,10 @@
 import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "./pages/Home";
 import Tables from "./pages/Tables";
-import Billing from "./pages/Billing";
-import Rtl from "./pages/Rtl";
-import Profile from "./pages/Profile";
+import Devices from "./pages/Devices";
+import Accounts from "./pages/Accounts";
+import Settings from "./pages/Settings";
+import Help from "./pages/Help";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Main from "./components/layout/Main";
@@ -21,9 +22,10 @@ function App() {
         <Main>
           <Route exact path="/dashboard" component={Home} />
           <Route exact path="/tables" component={Tables} />
-          <Route exact path="/billing" component={Billing} />
-          <Route exact path="/rtl" component={Rtl} />
-          <Route exact path="/profile" component={Profile} />
+          <Route exact path="/devices" component={Devices} />
+          <Route exact path="/accounts" component={Accounts} />
+          <Route exact path="/settings" component={Settings} />
+          <Route exact path="/help" component={Help} />
           <Redirect from="*" to="/dashboard" />
         </Main>
       </Switch>

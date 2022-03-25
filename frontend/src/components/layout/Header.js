@@ -286,7 +286,7 @@ function Header({
           <Badge size="small" count={4}>
             <Dropdown overlay={menu} trigger={["click"]}>
               <a
-                href="#pablo"
+                href="#dadn"
                 className="ant-dropdown-link"
                 onClick={(e) => e.preventDefault()}
               >
@@ -395,8 +395,8 @@ function Header({
                   </ButtonContainer>
                 </div>
                 <div className="viewstar">
-                  <a href="#pablo">{<StarOutlined />} Star</a>
-                  <a href="#pablo"> 190</a>
+                  <a href="#dadn">{<StarOutlined />} Star</a>
+                  <a href="#dadn"> 190</a>
                 </div>
 
                 <div className="ant-thank">
