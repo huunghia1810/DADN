@@ -1,4 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const addAssociations = require('./../../hooks/add-associations');
 
 module.exports = {
   before: {

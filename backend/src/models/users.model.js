@@ -50,6 +50,10 @@ module.exports = function (app) {
   users.associate = function (models) {
     // Define associations here
     // See https://sequelize.org/master/manual/assocs.html
+    users.hasOne(models.user_roles, {
+      as: 'userRole',
+      foreignKey: 'userId'
+    });
   }
 
   return users

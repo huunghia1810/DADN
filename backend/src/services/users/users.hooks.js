@@ -1,4 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
+const addAssociations = require('./../../hooks/add-associations');
 
 const {
   hashPassword, protect
@@ -7,8 +8,25 @@ const {
 module.exports = {
   before: {
     all: [],
-    find: [authenticate('jwt')],
-    get: [authenticate('jwt')],
+    find: [authenticate('jwt'),
+      addAssociations({
+        models: [
+          {
+            model: 'user-roles',
+            as: 'userRole'
+          }
+        ]
+      })
+    ],
+    get: [authenticate('jwt'),
+      addAssociations({
+        models: [
+          {
+            model: 'user-roles',
+            as: 'userRole'
+          }
+        ]
+      })],
     create: [hashPassword('password')],
     update: [hashPassword('password'), authenticate('jwt')],
     patch: [hashPassword('password'), authenticate('jwt')],

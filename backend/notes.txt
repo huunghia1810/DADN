@@ -11,3 +11,7 @@ db
 feathersJs script:
   install feathers cli: npm install -g feathers-cli
   generate service: feathers generate service
+
+
+feathersJs permission:
+  https://github.com/feathersjs-ecosystem/feathers-permissions#permission-format

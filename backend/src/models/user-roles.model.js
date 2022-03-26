@@ -6,10 +6,13 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const userRoles = sequelizeClient.define('user_roles', {
-    text: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
+    userId: {
+      type: DataTypes.INTEGER,
+      field: 'userId'
+    },
+    roles: {
+      type: DataTypes.TEXT,
+    },
   }, {
     hooks: {
       beforeCount(options) {
