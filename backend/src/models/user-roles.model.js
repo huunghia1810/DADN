@@ -6,6 +6,11 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const userRoles = sequelizeClient.define('user_roles', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
     userId: {
       type: DataTypes.INTEGER,
       field: 'userId'

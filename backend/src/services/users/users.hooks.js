@@ -1,5 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
-const addAssociations = require('./../../hooks/add-associations');
+const { disallow } = require('feathers-hooks-common')
+const addAssociations = require('./../../hooks/add-associations')
+const createDefaultUserRole = require('./../../hooks/users/create-default-user-role')
 
 const {
   hashPassword, protect
@@ -30,7 +32,7 @@ module.exports = {
     create: [hashPassword('password')],
     update: [hashPassword('password'), authenticate('jwt')],
     patch: [hashPassword('password'), authenticate('jwt')],
-    remove: [authenticate('jwt')]
+    remove: [disallow()]
   },
 
   after: {
@@ -41,7 +43,7 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [createDefaultUserRole()],
     update: [],
     patch: [],
     remove: []
