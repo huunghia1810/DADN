@@ -1,1 +1,13 @@
 db: gassystem / gasSystem@3322
+
+
+db
+  - https://sequelize.org/master/manual/model-basics.html#model-definition
+  - attributes:
+      link: https://sequelize.org/master/class/src/model.js~Model.html#static-method-init
+      examples: allowNull
+      validate attributes: https://sequelize.org/master/manual/validations-and-constraints.html
+
+feathersJs script:
+  install feathers cli: npm install -g feathers-cli
+  generate service: feathers generate service

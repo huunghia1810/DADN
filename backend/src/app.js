@@ -14,6 +14,7 @@ const middleware = require('./middleware')
 const services = require('./services')
 const appHooks = require('./app.hooks')
 const channels = require('./channels')
+const roles = require('./roles')
 
 const authentication = require('./authentication')
 
@@ -48,6 +49,8 @@ app.configure(authentication)
 app.configure(services)
 // Set up event channels (see channels.js)
 app.configure(channels)
+// Set up event roles (see roles.js)
+app.configure(roles)
 
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound())
