@@ -1,41 +1,46 @@
 // See https://sequelize.org/master/manual/model-basics.html
 // for more of what you can do here.
-const Sequelize = require('sequelize')
-const DataTypes = Sequelize.DataTypes
+const Sequelize = require('sequelize');
+const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
-  const sequelizeClient = app.get('sequelizeClient')
-  const devices = sequelizeClient.define('devices', {
+  const sequelizeClient = app.get('sequelizeClient');
+  const settings = sequelizeClient.define('settings', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [1,255],
-      }
-    },
-    code: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-      validate: {
-        is: /^\w+$/,
-        len: [1,255],
-      }
-    },
-    status: {
-      type: DataTypes.ENUM('active', 'inactive'),
-      allowNull: false,
-      defaultValue: 'active',
-    },
-    isDeleted: {
+    fanMode: {
       type: DataTypes.ENUM(1, 0),
       allowNull: false,
-      defaultValue: 0,
+      defaultValue: 1,
+    },
+    fanSpeed: {
+      type: DataTypes.INTEGER,
+      defaultValue: 50,
+      validate: {
+        min: 1,
+        max: 100,
+      }
+    },
+    buzzLoudness: {
+      type: DataTypes.INTEGER,
+      defaultValue: 50,
+      validate: {
+        min: 1,
+        max: 100,
+      }
+    },
+    sendSMS: {
+      type: DataTypes.ENUM(1, 0),
+      allowNull: false,
+      defaultValue: 1,
+    },
+    ledBuzz: {
+      type: DataTypes.ENUM(1, 0),
+      allowNull: false,
+      defaultValue: 1,
     },
     createdBy: {
       type: DataTypes.INTEGER,
@@ -44,21 +49,21 @@ module.exports = function (app) {
   }, {
     hooks: {
       beforeCount(options) {
-        options.raw = true
+        options.raw = true;
       }
     }
-  })
+  });
 
   // eslint-disable-next-line no-unused-vars
-  devices.associate = function (models) {
+  settings.associate = function (models) {
     // Define associations here
     // See https://sequelize.org/master/manual/assocs.html
-    devices.hasOne(models.users, { //devices.createdBy = users.id
+    settings.hasOne(models.users, { //devices.createdBy = users.id
       as: 'user',
       sourceKey: 'createdBy',
       foreignKey: 'id',
     })
-  }
+  };
 
-  return devices
-}
+  return settings;
+};

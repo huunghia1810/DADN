@@ -1,36 +1,32 @@
 // See https://sequelize.org/master/manual/model-basics.html
 // for more of what you can do here.
-const Sequelize = require('sequelize')
-const DataTypes = Sequelize.DataTypes
+const Sequelize = require('sequelize');
+const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
-  const sequelizeClient = app.get('sequelizeClient')
-  const devices = sequelizeClient.define('devices', {
+  const sequelizeClient = app.get('sequelizeClient');
+  const notifications = sequelizeClient.define('notifications', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    name: {
+    content: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1,255],
-      }
-    },
-    code: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-      validate: {
-        is: /^\w+$/,
         len: [1,255],
       }
     },
     status: {
-      type: DataTypes.ENUM('active', 'inactive'),
+      type: DataTypes.ENUM('read', 'unread'),
       allowNull: false,
-      defaultValue: 'active',
+      defaultValue: 'unread',
+    },
+    type: {
+      type: DataTypes.ENUM('notify', 'alert'), //notify: normal notify; alert: alert for gas leak
+      allowNull: false,
+      defaultValue: 'notify',
     },
     isDeleted: {
       type: DataTypes.ENUM(1, 0),
@@ -44,21 +40,21 @@ module.exports = function (app) {
   }, {
     hooks: {
       beforeCount(options) {
-        options.raw = true
+        options.raw = true;
       }
     }
-  })
+  });
 
   // eslint-disable-next-line no-unused-vars
-  devices.associate = function (models) {
+  notifications.associate = function (models) {
     // Define associations here
     // See https://sequelize.org/master/manual/assocs.html
-    devices.hasOne(models.users, { //devices.createdBy = users.id
+    notifications.hasOne(models.users, { //devices.createdBy = users.id
       as: 'user',
       sourceKey: 'createdBy',
       foreignKey: 'id',
     })
-  }
+  };
 
-  return devices
-}
+  return notifications;
+};
