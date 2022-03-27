@@ -1,6 +1,9 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
 const checkPermissions = require('feathers-permissions')
-const attachUserInfo = require('./../../hooks/attach-user-info');
+const attachUserInfo = require('./../../hooks/attach-user-info')
+const addAssociations = require('./../../hooks/add-associations')
+const attachCreatedBy = require('./../../hooks/attach-created-by')
+const addFilterByCurrentUser = require('./../../hooks/add-filter-by-current-user')
 
 //const checkUserPermission = require('../../hooks/users/check-user-permission')
 
@@ -9,9 +12,9 @@ module.exports = {
     all: [
       authenticate('jwt'),
       attachUserInfo(),
-      checkPermissions({
-        roles: [ 'admin' ],
-      }),
+      // checkPermissions({
+      //   roles: [ 'admin' ],
+      // }),
       // checkPermissions({
       //   roles: [ 'admin' ],
       //   field: async context => {
@@ -21,13 +24,33 @@ module.exports = {
       //     try {
       //       arrRoles = JSON.parse(userData.userRole.dataValues.roles)
       //     } catch (e) {}
-      //     return arrRoles;
+      //     return arrRoles
       //   }
       // }),
     ],
-    find: [],
-    get: [],
-    create: [],
+    find: [
+      addFilterByCurrentUser(),
+      addAssociations({
+        models: [
+          {
+            model: 'users',
+            as: 'user'
+          }
+        ]
+      })
+    ],
+    get: [
+      addFilterByCurrentUser(),
+      addAssociations({
+        models: [
+          {
+            model: 'users',
+            as: 'user'
+          }
+        ]
+      })
+    ],
+    create: [attachCreatedBy()],
     update: [],
     patch: [],
     remove: []

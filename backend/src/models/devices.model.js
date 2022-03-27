@@ -13,12 +13,28 @@ module.exports = function (app) {
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: [1,255],
+      }
+    },
+    code: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+      validate: {
+        is: /^\w+$/,
+        len: [1,255],
+      }
     },
     status: {
       type: DataTypes.ENUM('active', 'inactive'),
       allowNull: false,
       defaultValue: 'active',
+    },
+    createdBy: {
+      type: DataTypes.INTEGER,
+      field: 'createdBy'
     },
   }, {
     hooks: {
@@ -32,6 +48,11 @@ module.exports = function (app) {
   devices.associate = function (models) {
     // Define associations here
     // See https://sequelize.org/master/manual/assocs.html
+    devices.hasOne(models.users, { //devices.createdBy = users.id
+      as: 'user',
+      sourceKey: 'createdBy',
+      foreignKey: 'id',
+    });
   };
 
   return devices;
