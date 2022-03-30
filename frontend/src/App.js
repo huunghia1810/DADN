@@ -1,36 +1,38 @@
+import React, {useEffect, useState} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {Switch, Route, Redirect, BrowserRouter as Router} from 'react-router-dom'
 
-import { Switch, Route, Redirect } from "react-router-dom";
-import Home from "./pages/Home";
-import Tables from "./pages/Tables";
-import Devices from "./pages/Devices";
-import Accounts from "./pages/Accounts";
-import Settings from "./pages/Settings";
-import Help from "./pages/Help";
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
-import Main from "./components/layout/Main";
-import "antd/dist/antd.css";
-import "./assets/styles/main.css";
-import "./assets/styles/responsive.css";
+import {Provider} from 'react-redux'
 
-function App() {
+import SignUp from './pages/SignUp'
+import SignIn from './pages/SignIn'
+import Main from './components/layout/Main'
+import PageNotFound from './components/layout/PageNotFound/PageNotFound'
+import { UserIsAuthenticated } from './utils/router'
+
+import 'antd/dist/antd.css'
+import './assets/styles/main.css'
+import './assets/styles/responsive.css'
+
+import store from './store/store'
+
+const App = props => {
+
   return (
-    <div className="App">
-      <Switch>
-        <Route path="/sign-up" exact component={SignUp} />
-        <Route path="/sign-in" exact component={SignIn} />
-        <Main>
-          <Route exact path="/dashboard" component={Home} />
-          <Route exact path="/tables" component={Tables} />
-          <Route exact path="/devices" component={Devices} />
-          <Route exact path="/accounts" component={Accounts} />
-          <Route exact path="/settings" component={Settings} />
-          <Route exact path="/help" component={Help} />
-          <Redirect from="*" to="/dashboard" />
-        </Main>
-      </Switch>
+    <div className='App'>
+      <Router>
+        <Switch>
+          <Route path='/sign-up' exact component={SignUp} />
+          <Route path='/sign-in' exact component={SignIn} />
+          <Route path={'/:entity'} component={UserIsAuthenticated(Main)} />
+          <Route path={'/:entity/:action'} component={UserIsAuthenticated(Main)} />
+          <Route path={'/:entity/:action/:id'} component={UserIsAuthenticated(Main)} />
+          <Route path='/' exact component={SignIn}></Route>
+          <Route component={PageNotFound} />
+        </Switch>
+      </Router>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

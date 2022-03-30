@@ -1,1 +1,2 @@
 source from: https://github.com/creativetimofficial/muse-ant-design-dashboard
+react feathersjs: https://medium.com/@samsonssali/quick-feathers-react-integration-13f1cb72fdbf

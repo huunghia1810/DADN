@@ -1,3 +1,4 @@
+import React, { useCallback, useState, useEffect } from 'react'
 
 import {
   Row,
@@ -11,27 +12,44 @@ import {
   Button,
   Avatar,
   Typography,
-} from "antd";
+} from "antd"
+import rest from '@feathersjs/rest-client'
 
-import { ToTopOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import feathersClient from './../feathersClient'
 
-// Images
-import ava1 from "../assets/images/logo-shopify.svg";
-import ava2 from "../assets/images/logo-atlassian.svg";
-import ava3 from "../assets/images/logo-slack.svg";
-import ava5 from "../assets/images/logo-jira.svg";
-import ava6 from "../assets/images/logo-invision.svg";
-import face from "../assets/images/face-1.jpg";
-import face2 from "../assets/images/face-2.jpg";
-import face3 from "../assets/images/face-3.jpg";
-import face4 from "../assets/images/face-4.jpg";
-import face5 from "../assets/images/face-5.jpeg";
-import face6 from "../assets/images/face-6.jpeg";
-import pencil from "../assets/images/pencil.svg";
+const aaa = () => {
 
-function Tables() {
-  const onChange = (e) => console.log(`radio checked:${e.target.value}`);
+}
+const Tables = props => {
+
+  useEffect(() => {
+    fetchSetting()
+  }, [])
+
+  const fetchSetting = async () => {
+    feathersClient.reAuthenticate().then(() => {
+      debugger
+    }).catch(() => {
+      props.history.push('/sign-in')
+    })
+
+    // Returns the authenticated user
+    // const { user } = await feathersClient.get('authentication');
+    // // Gets the authenticated accessToken (JWT)
+    // const { accessToken } = await feathersClient.get('authentication');
+
+    return feathersClient.service('settings').find({
+      query: {
+        $sort: {
+          id: -1
+        }
+      }
+    }).then(res => {
+      debugger
+        //this.setState({products: res.data})
+    })
+
+  }
 
   return (
     <>
@@ -39,7 +57,7 @@ function Tables() {
         abc
       </div>
     </>
-  );
+  )
 }
 
-export default Tables;
+export default Tables
