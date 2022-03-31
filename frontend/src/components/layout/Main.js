@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {useLocation, useParams} from 'react-router-dom'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 
 import { Layout, Drawer, Affix } from 'antd'
 import Sidenav from './Sidenav'
@@ -23,7 +23,15 @@ const { Header: AntHeader, Content, Sider } = Layout
 
 function Main({ children }) {
   let { entity, action } = useParams()
-  
+
+  const User = useSelector(state => state.User) || {}
+
+  useEffect(() => {
+    if(Object.keys(User.authInfo).length) {
+      console.log('Auth Info______________', User)
+    }
+  },[User])
+
   const [childComponent, setChildComponent] = useState(false)
   const [visible, setVisible] = useState(false)
   const [placement, setPlacement] = useState('right')

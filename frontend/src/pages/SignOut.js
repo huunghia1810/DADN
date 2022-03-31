@@ -8,7 +8,10 @@ const SignOut = props => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(ActionUser.signOut())
+
+
+
+    //dispatch(ActionUser.signOut())
   },[])
 
   return (

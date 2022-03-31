@@ -27,17 +27,6 @@ const Tables = props => {
   }, [])
 
   const fetchSetting = async () => {
-    feathersClient.reAuthenticate().then(() => {
-      debugger
-    }).catch(() => {
-      props.history.push('/sign-in')
-    })
-
-    // Returns the authenticated user
-    // const { user } = await feathersClient.get('authentication');
-    // // Gets the authenticated accessToken (JWT)
-    // const { accessToken } = await feathersClient.get('authentication');
-
     return feathersClient.service('settings').find({
       query: {
         $sort: {

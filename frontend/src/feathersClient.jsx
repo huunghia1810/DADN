@@ -28,9 +28,10 @@ const feathersClient = feathers()
       storageKey: 'feathers-jwt'
     }
   ))
-  // .configure(
-  //   feathers.authentication({
-  //     storage:window.localStorage
-  //   })
-  // )
+
+// feathersClient.service('notifications').create({
+//   content: "This notification content 1",
+//   type: "notify"
+// })
+
 export default feathersClient
