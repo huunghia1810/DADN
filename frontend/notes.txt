@@ -10,3 +10,15 @@ check version centos
 
 install docker on centos 7
   https://docs.docker.com/engine/install/centos/
+
+feathersJs dockerize
+  https://docs.feathersjs.com/cookbook/deploy/docker.html#create-an-app
+
+  docker build -t gas-system-management-image .
+  docker run -d -p 3445:3445 --name gas-system-management-container gas-system-management-image
+
+open port
+  https://hocvps.com/kiem-tra-va-mo-port-vps-tren-centos/
+  https://hocvps.com/iptables/
+  $ iptables -I INPUT -p tcp -m tcp --dport 3445 -j ACCEPT
+
