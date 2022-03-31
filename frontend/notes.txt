@@ -1,2 +1,12 @@
 source from: https://github.com/creativetimofficial/muse-ant-design-dashboard
 react feathersjs: https://medium.com/@samsonssali/quick-feathers-react-integration-13f1cb72fdbf
+
+check & kill used port
+  lsof -n -i4TCP:3030
+  kill -9 PID
+
+check version centos
+  cat /etc/*elease
+
+install docker on centos 7
+  https://docs.docker.com/engine/install/centos/

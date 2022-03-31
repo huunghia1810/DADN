@@ -12,6 +12,15 @@ feathersJs script:
   install feathers cli: npm install -g feathers-cli
   generate service: feathers generate service
 
-
 feathersJs permission:
   https://github.com/feathersjs-ecosystem/feathers-permissions#permission-format
+
+check & kill used port
+  lsof -n -i4TCP:3030
+  kill -9 PID
+
+check version centos
+  cat /etc/*elease
+
+install docker on centos 7
+  https://docs.docker.com/engine/install/centos/
