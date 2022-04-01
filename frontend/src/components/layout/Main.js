@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import {useLocation, useParams} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
+import queryString from 'query-string'
+import _ from 'lodash'
+import {ErrorBoundary} from 'react-error-boundary'
 
 import { Layout, Drawer, Affix } from 'antd'
 import Sidenav from './Sidenav'
@@ -62,7 +65,6 @@ function Main({ children }) {
       setPlacement('right')
     }
   }, [pathname])
-
 
   const handleUpdateMainContent = () => {
     let mainComponent = null

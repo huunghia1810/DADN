@@ -1,6 +1,8 @@
-
 import React, { Component, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import queryString from 'query-string'
+import _ from 'lodash'
+
 import {useDispatch, useSelector} from 'react-redux'
 
 import feathersClient from './../feathersClient'
@@ -32,32 +34,41 @@ const SignIn = props => {
   const dispatch = useDispatch()
 
   const User = useSelector(state => state.User) || {}
-  
+
+  const objParams = queryString.parse(props.location.search)
+
   useEffect(() => {
     dispatch(ActionUser.checkAuth())
   },[])
   
   useEffect(() => {
     if(Object.keys(User.authInfo).length) {
-      props.history.push('/dashboard')
+      handleRedirect()
     }
   },[User])
 
-  const onFinish = (values) => {
+  const onFinish = values => {
+    const { email, password } = values
     feathersClient.authenticate({
       strategy: 'local',
-      email: 'admin1@gmail.com',
-      password: '123456'
+      email,
+      password
     }).then(res => {
-      //const aaa = feathersClient.get('token')
-      console.log('Authenticated!', feathersClient.get('token'))
-
-      feathersClient.set('user', res.user)
-      props.history.push('/dashboard')
+      // console.log('Authenticated!', feathersClient.get('token'))
+      // feathersClient.set('user', res.user)
+      handleRedirect()
     }).catch(e => {
       debugger
       console.error('Authentication error', e)
     })
+  }
+
+  const handleRedirect = () => {
+    if(!_.isUndefined(objParams.redirect) && objParams.redirect !== '/sign-out') {
+      props.history.push(objParams.redirect)
+    } else {
+      props.history.push('/dashboard')
+    }
   }
 
   const onFinishFailed = (errorInfo) => {
@@ -109,7 +120,7 @@ const SignIn = props => {
                     },
                   ]}
                 >
-                  <Input placeholder='Password' />
+                  <Input type="password" placeholder='Password' />
                 </Form.Item>
 
                 {/*<Form.Item

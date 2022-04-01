@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"
 
 import {
   Card,
@@ -13,31 +13,31 @@ import {
   Button,
   Timeline,
   Radio, List, Table, Avatar,
-} from "antd";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFan, faBullhorn, faTowerBroadcast, faVolumeHigh, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
+} from "antd"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFan, faBullhorn, faTowerBroadcast, faVolumeHigh, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
 
 import {
   RightOutlined,
-} from "@ant-design/icons";
-import Paragraph from "antd/lib/typography/Paragraph";
+} from "@ant-design/icons"
+import Paragraph from "antd/lib/typography/Paragraph"
 
-import Echart from "../components/chart/EChart";
-import LineChart from "../components/chart/LineChart";
+import Echart from "../components/chart/EChart"
+import LineChart from "../components/chart/LineChart"
 
-import card from "../assets/images/info-card-1.jpg";
-import warning from "../assets/images/warning.png";
-import cooler from "../assets/images/cooler.png";
-import broadcast from "../assets/images/broadcast.png";
-import volume from "../assets/images/volume.png";
-import shield from "../assets/images/shield.png";
+import card from "../assets/images/info-card-1.jpg"
+import warning from "../assets/images/warning.png"
+import cooler from "../assets/images/cooler.png"
+import broadcast from "../assets/images/broadcast.png"
+import volume from "../assets/images/volume.png"
+import shield from "../assets/images/shield.png"
 
 function Home() {
-  const { Title, Text } = Typography;
+  const { Title, Text } = Typography
 
-  const onChange = (e) => console.log(`radio checked:${e.target.value}`);
+  const onChange = (e) => console.log(`radio checked:${e.target.value}`)
 
-  const [reverse, setReverse] = useState(false);
+  const [reverse, setReverse] = useState(false)
 
   //--------------data section members start------------
   const columnsMembers = [
@@ -67,7 +67,7 @@ function Home() {
       key: "status",
       dataIndex: "status",
     },
-  ];
+  ]
 
   const arrMembers = [
     {
@@ -115,7 +115,7 @@ function Home() {
         <span className={"text-danger"}>inactive</span>
       </>),
     },
-  ];
+  ]
   //--------------data section members end------------
 
   //--------------data section leak history start------------
@@ -136,7 +136,7 @@ function Home() {
       key: "time",
       dataIndex: "time",
     },
-  ];
+  ]
 
   const arrGasLeakHistory = [
     {
@@ -169,7 +169,7 @@ function Home() {
       status: "1",
       time: "18-02-2022 13:34:12",
     },
-  ];
+  ]
   //--------------data section leak history end------------
 
   return (
@@ -291,7 +291,7 @@ function Home() {
         </Row>
       </div>
     </>
-  );
+  )
 }
 
-export default Home;
+export default Home

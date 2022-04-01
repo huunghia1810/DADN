@@ -54,7 +54,7 @@ export const UserIsAuthenticated = connectedRouterRedirect({
 export const UserIsNotAuthenticated = connectedRouterRedirect({
     AuthenticatingComponent: LoadingSpinner,
     wrapperDisplayName: 'UserIsNotAuthenticated',
-    allowRedirectBack: false,
+    allowRedirectBack: true,
     // Want to redirect the user when they are done loading and authenticated
     authenticatedSelector: ({ firebase: { auth } }) => auth.isEmpty,
     authenticatingSelector: ({ firebase: { auth, isInitializing } }) =>
