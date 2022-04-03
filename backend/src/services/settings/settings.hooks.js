@@ -1,5 +1,6 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks
 const { disallow } = require('feathers-hooks-common')
+const checkPermissions = require('feathers-permissions')
 
 const attachUserInfo = require('./../../hooks/attach-user-info')
 const addAssociations = require('./../../hooks/add-associations')
@@ -11,6 +12,9 @@ module.exports = {
     all: [
       authenticate('jwt'),
       attachUserInfo(),
+      checkPermissions({
+        roles: [ 'aaaa' ],
+      }),
     ],
     find: [
       addFilterByCurrentUser(),
@@ -59,4 +63,4 @@ module.exports = {
     patch: [],
     remove: []
   }
-};
+}

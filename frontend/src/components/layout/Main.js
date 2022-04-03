@@ -3,7 +3,6 @@ import {useLocation, useParams} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import queryString from 'query-string'
 import _ from 'lodash'
-import {ErrorBoundary} from 'react-error-boundary'
 
 import { Layout, Drawer, Affix } from 'antd'
 import Sidenav from './Sidenav'
@@ -14,7 +13,7 @@ import Footer from './Footer'
 import Home from './../../pages/Home'
 import Tables from './../../pages/Tables'
 import Devices from './../../pages/Devices'
-import Accounts from './../../pages/Accounts'
+import MyProfile from './../../pages/MyProfile'
 import Settings from './../../pages/Settings'
 import Help from './../../pages/Help'
 import SignOut from './../../pages/SignOut'
@@ -78,8 +77,8 @@ function Main({ children }) {
       case 'devices':
         mainComponent = <Devices></Devices>
         break
-      case 'accounts':
-        mainComponent = <Accounts></Accounts>
+      case 'my-profile':
+        mainComponent = <MyProfile></MyProfile>
         break
       case 'settings':
         mainComponent = <Settings></Settings>

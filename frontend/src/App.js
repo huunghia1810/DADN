@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {Switch, Route, Redirect, BrowserRouter as Router} from 'react-router-dom'
+import _ from 'lodash'
 
 import feathersClient from './feathersClient'
 
@@ -28,29 +29,22 @@ const App = props => {
   const handleServiceError = () => {
     feathersClient.hooks({
       error(context) {
-        // const data = {
-        //   type: 'error',
-        //   title: context.service.path.charAt(0).toUpperCase() + context.service.path.slice(1),
-        //   content: context.error.message,
-        //   code: context.error.code,
-        // }
-        errorModalDialogs.show({
-          title: 'Error',
-          content: context.error.message,
-          okText: 'Ok',
-          onOk() {
-            if(context.error.code == 403) {
-              window.location.replace('/dashboard')
-            } else {
-              //window.location.href('/sign-in')
-            }
-          },
-          error: context.error
-        });
-        //dispatch(ActionPopup.setData(data))
-
-        //return (<Modal type='error' title={context.service.path} content={context.error.message} />)
-        //console.error(`Error in '${context.path}' service method '${context.method}'`, context.error.stack)
+        if(context.service.path !== 'users'
+          || (context.service.path === 'users' && context.method !== 'create')) { //context.data.strategy = local -> login
+          errorModalDialogs.show({
+            title: 'Error',
+            content: context.error.message,
+            okText: 'Ok',
+            onOk() {
+              if(context.error.code == 403) {
+                window.location.replace('/dashboard')
+              } else {
+                //window.location.href('/sign-in')
+              }
+            },
+            error: context.error
+          })
+        }
       }
     })
   }

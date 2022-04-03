@@ -1,5 +1,6 @@
 // See https://sequelize.org/master/manual/model-basics.html
 // for more of what you can do here.
+//validate attributes: https://sequelize.org/master/manual/validations-and-constraints.html
 const Sequelize = require('sequelize')
 const DataTypes = Sequelize.DataTypes
 
@@ -13,12 +14,18 @@ module.exports = function (app) {
     },
     fullName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        is: /^[a-zA-Z ]+$/,
+      },
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      //unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
     status: {
       type: DataTypes.ENUM('active', 'inactive'),
@@ -27,17 +34,24 @@ module.exports = function (app) {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: [6, 255]
+      },
     },
     dateOfBirth: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      allowNull: false,
     },
     phone: {
       type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
       validate: {
         //is: ['[a-z]','i'],        // will only allow letters
         //max: 12,                  // only allow values <= 23
-        len: [9,12]
+        len: [10,12],
+        is: /^\d*$/,
         // isIn: {
         //   args: [['en', 'zh']],
         //   msg: "Must be English or Chinese"

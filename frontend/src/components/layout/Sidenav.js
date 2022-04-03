@@ -81,19 +81,6 @@ function Sidenav({ color }) {
             <span className="label">Devices</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="3">
-          <NavLink to="/accounts">
-            <span
-              className="icon"
-              style={{
-                background: page === "accounts" ? color : "",
-              }}
-            >
-              <UserOutlined />
-            </span>
-            <span className="label">Accounts</span>
-          </NavLink>
-        </Menu.Item>
         <Menu.Item key="4">
           <NavLink to="/settings">
             <span
@@ -122,6 +109,19 @@ function Sidenav({ color }) {
         </Menu.Item>
 
         <Menu.Item className="menu-item-header" key="6"> </Menu.Item>
+        <Menu.Item key="3">
+          <NavLink to="/my-profile">
+            <span
+              className="icon"
+              style={{
+                background: page === "my-profile" ? color : "",
+              }}
+            >
+              <UserOutlined />
+            </span>
+            <span className="label">My profile</span>
+          </NavLink>
+        </Menu.Item>
         <Menu.Item key="7">
           <NavLink to="/sign-out">
             <span

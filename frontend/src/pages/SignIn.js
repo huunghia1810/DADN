@@ -49,18 +49,7 @@ const SignIn = props => {
 
   const onFinish = values => {
     const { email, password } = values
-    feathersClient.authenticate({
-      strategy: 'local',
-      email,
-      password
-    }).then(res => {
-      // console.log('Authenticated!', feathersClient.get('token'))
-      // feathersClient.set('user', res.user)
-      handleRedirect()
-    }).catch(e => {
-      debugger
-      console.error('Authentication error', e)
-    })
+    dispatch(ActionUser.signIn({email, password}))
   }
 
   const handleRedirect = () => {
