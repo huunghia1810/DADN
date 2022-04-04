@@ -410,7 +410,7 @@ body {
   box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
   border-radius: 12px;
   min-width: 276px;
-  padding: 16px 8px;
+  padding: 16px 8px 4px 8px;
 }
 
 .ant-dropdown-menu.ant-dropdown-menu-split.header-notifications-dropdown
@@ -531,6 +531,7 @@ h4 {
   margin: 0;
   box-shadow: none;
   color: #8c8c8c;
+  cursor: pointer;
 }
 .layout-dashboard .header-control .btn-sign-in svg {
   margin-right: 4px;
@@ -3069,6 +3070,17 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
   position: absolute;
   left: calc(50% - 20px);
   z-index: 9;
+}
+
+.list-notifications .item-unread {
+  background-color: #bfc0c0;
+  border-radius: 3px;
+  margin-bottom: 4px;
+}
+
+.ant-dropdown-menu-split.header-notifications-dropdown.user-logout {
+  min-width: 112px;
+  padding: 8px 10px 1px 0;
 }
 
 /*.device-toggle {*/

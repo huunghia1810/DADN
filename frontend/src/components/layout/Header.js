@@ -7,18 +7,8 @@ import {useDispatch, useSelector} from 'react-redux'
 import feathersClient from './../../feathersClient'
 
 import {
-  Row,
-  Col,
-  Breadcrumb,
-  Badge,
-  Dropdown,
-  Button,
-  List,
-  Avatar,
-  Input,
-  Drawer,
-  Typography,
-  Switch,
+  Row, Col, Breadcrumb, Badge, Dropdown, Button, List,
+  Avatar, Input, Drawer, Typography, Switch, Menu, message,
 } from 'antd'
 
 import {
@@ -31,8 +21,17 @@ import {
 import { NavLink, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import notifyWarning from '../../assets/images/warning-2.png'
+import defaultAvatar from '../../assets/images/user.png'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignOut } from '@fortawesome/free-solid-svg-icons'
+
+//----------import constants---------------
+import * as constantNotification from '../../constants/Notification'
+
+//----------import actions---------------
 import ActionNotification from '../../actions/Notification'
+import ActionUser from '../../actions/User'
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -54,7 +53,6 @@ const ButtonContainer = styled.div`
     background-color: #1890ff
   }
 `
-
 const bell = [
   <svg
     width='20'
@@ -74,7 +72,6 @@ const bell = [
     ></path>
   </svg>,
 ]
-
 const clockicon = [
   <svg
     width='20'
@@ -92,7 +89,6 @@ const clockicon = [
     ></path>
   </svg>,
 ]
-
 const logsetting = [
   <svg
     width='20'
@@ -110,25 +106,6 @@ const logsetting = [
     ></path>
   </svg>,
 ]
-
-const profile = [
-  <svg
-    width='20'
-    height='20'
-    viewBox='0 0 20 20'
-    fill='none'
-    xmlns='http://www.w3.org/2000/svg'
-    key={0}
-  >
-    <path
-      fillRule='evenodd'
-      clipRule='evenodd'
-      d='M18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10ZM12 7C12 8.10457 11.1046 9 10 9C8.89543 9 8 8.10457 8 7C8 5.89543 8.89543 5 10 5C11.1046 5 12 5.89543 12 7ZM9.99993 11C7.98239 11 6.24394 12.195 5.45374 13.9157C6.55403 15.192 8.18265 16 9.99998 16C11.8173 16 13.4459 15.1921 14.5462 13.9158C13.756 12.195 12.0175 11 9.99993 11Z'
-      fill='#111827'
-    ></path>
-  </svg>,
-]
-
 const toggler = [
   <svg
     width='20'
@@ -140,7 +117,6 @@ const toggler = [
     <path d='M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z'></path>
   </svg>,
 ]
-
 const setting = [
   <svg
     width='20'
@@ -158,6 +134,7 @@ const setting = [
     ></path>
   </svg>,
 ]
+const notifyTitleMaxLength = 25
 
 const Header = props => {
 
@@ -179,11 +156,15 @@ const Header = props => {
 
   const [visible, setVisible] = useState(false)
   const [data, setData] = useState([])
+  const [totalUnread, setTotalUnread] = useState(0)
   const [sidenavType, setSidenavType] = useState('transparent')
 
+  const showDrawer = () => setVisible(true)
+  const hideDrawer = () => setVisible(false)
 
   useEffect(() => {
     dispatch(ActionNotification.getListNotifications())
+    dispatch(ActionNotification.getListNotifications(constantNotification.NOTIFICATION_GET_TYPE_UNREAD))
     feathersClient.service('notifications')
       .on('created', message => {
         handleListenNotifications(message)
@@ -203,40 +184,72 @@ const Header = props => {
       const strDesc = moment(curNotify.createdAt).locale('vi').fromNow()
 
       arrNewNotifications.push({
-        title: curNotify.content,
+        key: curNotify.id,
+        title: curNotify.content.length > notifyTitleMaxLength ? `${curNotify.content.substring(0, notifyTitleMaxLength)}...` : curNotify.content,
         description: <>{clockicon} {strDesc}</>,
         avatar: notifyWarning,
+        unread: curNotify.status === constantNotification.NOTIFICATION_GET_TYPE_UNREAD,
       })
     })
     setData(arrNewNotifications)
+    setTotalUnread(StoreNotification.totalUnread || 0)
   },[StoreNotification])
+  useEffect(() => window.scrollTo(0, 0))
 
   const handleListenNotifications = (message) => {
     if(message.createdBy === authInfo.user.id) {
       //fetch notifications
       dispatch(ActionNotification.getListNotifications())
+      dispatch(ActionNotification.getListNotifications(constantNotification.NOTIFICATION_GET_TYPE_UNREAD))
     }
   }
 
-  useEffect(() => window.scrollTo(0, 0))
+  const handleClickNotify = (objNotify) => {
+    dispatch(ActionNotification.updateNotify({id: objNotify.key, data: {status: 'read'}}))
+  }
 
-  const showDrawer = () => setVisible(true)
-  const hideDrawer = () => setVisible(false)
+  const handleLogout = () => {
+    dispatch(ActionUser.signOut())
+  }
 
   //------------------------render section----------------------------------
   //------------------------render section----------------------------------
-  const htmlMenu = (
+  const htmlNotificationsMenu = (
     <List
       min-width='100%'
-      className='header-notifications-dropdown '
+      className='list-notifications header-notifications-dropdown '
       itemLayout='horizontal'
       dataSource={data}
-      renderItem={(item) => (
-        <List.Item>
+      renderItem={item => (
+        <List.Item
+          onClick={() => handleClickNotify(item)}
+          key={item.key}
+          className={item.unread ? 'item-unread' : null}
+        >
           <List.Item.Meta
             avatar={<Avatar shape='square' src={item.avatar} />}
             title={item.title}
             description={item.description}
+          />
+        </List.Item>
+      )}
+    />
+  )
+
+  const userMenu = (
+    <List
+      min-width='100%'
+      className='user-logout header-notifications-dropdown '
+      itemLayout='horizontal'
+      dataSource={[{title: 'Logout', key: 'Logout'}]}
+      renderItem={item => (
+        <List.Item
+          onClick={() => handleLogout()}
+          key={item.key}
+        >
+          <List.Item.Meta
+            avatar={<FontAwesomeIcon icon={faSignOut} />}
+            title={item.title}
           />
         </List.Item>
       )}
@@ -268,10 +281,9 @@ const Header = props => {
           </div>
         </Col>
         <Col span={24} md={18} className='header-control'>
-          <Badge size='small' count={4}>
-            <Dropdown overlay={htmlMenu} trigger={['click']}>
-              <a
-                href='#dadn'
+          <Badge size='small' count={totalUnread}>
+            <Dropdown overlay={htmlNotificationsMenu} trigger={['click']}>
+              <a href=''
                 className='ant-dropdown-link'
                 onClick={(e) => e.preventDefault()}
               >
@@ -279,7 +291,7 @@ const Header = props => {
               </a>
             </Dropdown>
           </Badge>
-          <Button type='link' onClick={showDrawer}>
+          {/*<Button type='link' onClick={showDrawer}>
             {logsetting}
           </Button>
           <Button
@@ -395,11 +407,17 @@ const Header = props => {
                 </div>
               </div>
             </div>
-          </Drawer>
-          <Link to='/sign-in' className='btn-sign-in'>
-            {profile}
-            <span>Sign in</span>
-          </Link>
+          </Drawer>*/}
+          <Dropdown overlay={userMenu} trigger={['click']}>
+            <div className='btn-sign-in'>
+              <img src={defaultAvatar} />&nbsp;
+              <span>{authInfo.user.fullName || ' '}</span>
+            </div>
+          </Dropdown>
+          {/*<Link to='/sign-in' className='btn-sign-in'>*/}
+          {/*  <img src={defaultAvatar} />&nbsp;*/}
+          {/*  <span>{authInfo.user.fullName || ' '}</span>*/}
+          {/*</Link>*/}
           <Input
             className='header-search'
             placeholder='Type here...'
