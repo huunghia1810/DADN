@@ -3068,6 +3068,7 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 
 .ant-spin.ant-spin-spinning {
   position: absolute;
+  top: calc(50% - 20px);
   left: calc(50% - 20px);
   z-index: 9;
 }
@@ -3081,6 +3082,10 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 .ant-dropdown-menu-split.header-notifications-dropdown.user-logout {
   min-width: 112px;
   padding: 8px 10px 1px 0;
+}
+
+#MyProfileForm .ant-btn {
+  margin-right: 8px;
 }
 
 /*.device-toggle {*/

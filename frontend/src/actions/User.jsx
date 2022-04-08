@@ -13,19 +13,17 @@ class ActionUser {
             })
         }
     }
-    // signIn({email, password}) {
-    //     return feathersClient.service('settings').find({
-    //         query: {
-    //             $sort: {
-    //                 id: -1
-    //             }
-    //         }
-    //     }).then(res => {
-    //         debugger
-    //         //this.setState({products: res.data})
-    //     })
-    // }
-    signIn({email, password}) {
+    update(data, id) {
+        return function (dispatch) {
+            dispatch({type: constantUser.USER_UPDATE_PROCESSING})
+            feathersClient.service('users').patch(id, data).then(res => {
+                dispatch({type: constantUser.USER_UPDATE_SUCCESS, payload: res})
+            }).catch(error => {
+                dispatch({type: constantUser.USER_UPDATE_FAIL, payload: error})
+            })
+        }
+    }
+    signIn({email, password, ...data}) {
         return function (dispatch) {
             dispatch({type: constantUser.USER_AUTH_PROCESSING})
             feathersClient.authenticate({
@@ -38,6 +36,17 @@ class ActionUser {
                 dispatch({type: constantUser.USER_AUTH_FAIL, payload: error})
             })
         }
+    }
+
+    async changePassword({oldPassword, password}, callbackError) {
+        let res
+        try {
+            res = await feathersClient.service('user-change-password').create({oldPassword, password})
+        } catch (e) {
+            callbackError(e)
+            throw e
+        }
+        return res
     }
     signUp(data) {
         return function (dispatch) {

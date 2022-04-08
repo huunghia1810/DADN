@@ -73,6 +73,29 @@ export default function reducer(state = initialState, action) {
                 fetching: false,
                 error: action.payload,
             }
+
+        case constantUser.USER_UPDATE_PROCESSING:
+            return {
+                ...state,
+                fetching: true,
+                error: null,
+            }
+        case constantUser.USER_UPDATE_SUCCESS:
+            const authInfo = {...state.authInfo}
+            authInfo.user = {...authInfo.user, ...action.payload}
+            return {
+                ...state,
+                fetching: false,
+                authInfo,
+                error: null,
+            }
+        case constantUser.USER_UPDATE_FAIL:
+            return {
+                ...state,
+                fetching: false,
+                error: action.payload,
+            }
+
         default:
             return state
     }

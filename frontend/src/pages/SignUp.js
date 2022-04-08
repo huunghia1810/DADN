@@ -54,7 +54,6 @@ const SignUp = props => {
 
   useEffect(() => {
     dispatch(ActionUser.checkAuth())
-
   },[])
 
   useEffect(() => {
