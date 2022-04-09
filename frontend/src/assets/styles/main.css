@@ -3082,9 +3082,10 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 .ant-dropdown-menu-split.header-notifications-dropdown.user-logout {
   min-width: 112px;
   padding: 8px 10px 1px 0;
+  cursor: pointer;
 }
 
-#MyProfileForm .ant-btn {
+#MyProfileForm .ant-btn, #SettingForm .ant-btn {
   margin-right: 8px;
 }
 

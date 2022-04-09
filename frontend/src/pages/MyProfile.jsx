@@ -2,6 +2,7 @@ import moment from 'moment'
 import _ from 'lodash'
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import {Row, Col, Form, Input, Select, Button, Typography, DatePicker } from 'antd'
 
@@ -16,7 +17,7 @@ const { Title } = Typography
 const { Option } = Select
 
 const MyProfile = props => {
-
+  const history = useHistory()
   const dispatch = useDispatch()
 
   const User = useSelector(state => state.User) || {}
@@ -48,7 +49,8 @@ const MyProfile = props => {
 
   //handlers
   const handleCancel = () => {
-    window.location.replace('/dashboard')
+    history.push('/dashboard')
+    //window.location.replace('/dashboard')
   }
 
   const onFinish = async (values) => {

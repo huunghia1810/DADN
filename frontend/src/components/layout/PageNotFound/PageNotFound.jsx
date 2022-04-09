@@ -16,7 +16,8 @@ const PageNotFound = (props) => {
   const dispatch = useDispatch()
 
   const handleGoBack = () => {
-    window.location.replace('/dashboard')
+    history.push('/dashboard')
+    //window.location.replace('/dashboard')
     //history.goBack()
   }
 
