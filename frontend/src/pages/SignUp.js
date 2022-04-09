@@ -96,28 +96,33 @@ const SignUp = props => {
     )
   }
 
-  const prefixSelector = (
-    <Form.Item name="phonePrefix" noStyle>
-      <Select disabled={onSubmit} style={{ width: 70 }}>
-        <Option value="84">+84</Option>
-      </Select>
-    </Form.Item>
-  )
-
-
   const onFinish = (values) => {
     setOnSubmit(true)
     setFormValues(values)
     const dataPrepared = _prepareData(values)
-    dispatch(ActionUser.signUp(dataPrepared))
+    dispatch(ActionUser.signUp(dataPrepared, handleRegisterSuccess, handleRegisterError))
 
+    //console.log('Success:', values)
+  }
+
+  const handleRegisterSuccess = (e) => {
     successNotificationDialogs.show({
-      message: 'Messs aaa ',
-      description: ' descrpsd sdfsf sf ',
+      message: 'Register successful',
+      description: 'Redirect login page...',
       placement: 'top',
       duration: 1.5,
     })
-    console.log('Success:', values)
+
+    setTimeout(() => window.location.replace('/sign-in'), 1500)
+  }
+
+  const handleRegisterError = (e) => {
+    errorNotificationDialogs.show({
+      message: 'Register fail',
+      description: `${e.message}`,
+      placement: 'top',
+      duration: 1.5,
+    })
   }
 
   const onFinishFailed = (errorInfo) => {
@@ -131,6 +136,14 @@ const SignUp = props => {
   }
 
   //render
+  const prefixSelector = (
+    <Form.Item name="phonePrefix" noStyle>
+      <Select disabled={onSubmit} style={{ width: 70 }}>
+        <Option value="84">+84</Option>
+      </Select>
+    </Form.Item>
+  )
+
   const htmlSpin = onSubmit ? <LoadingSpinner/> : null
 
   return (
@@ -177,7 +190,7 @@ const SignUp = props => {
                 name='fullName'
                 rules={[
                   { required: true, message: 'Please input your username!' },
-                  { pattern: /^[a-zA-Z ]+$/, message: 'Full Name is invalid' },
+                  { pattern: /^[A-Za-z0-9 ]+$/, message: 'Full Name is invalid' },
                   { min: 3, message: 'Length of Full name must be >= 3 characters' },
                 ]}
               >
@@ -205,10 +218,7 @@ const SignUp = props => {
                 name="confirm"
                 dependencies={['password']}
                 rules={[
-                  {
-                    required: true,
-                    message: 'Please confirm your password!',
-                  },
+                  {required: true, message: 'Please confirm your password!'},
                   ({ getFieldValue }) => ({
                     validator(_, value) {
                       if (!value || getFieldValue('password') === value) {

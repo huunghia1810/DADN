@@ -1,4 +1,5 @@
 import moment from 'moment'
+import _ from 'lodash'
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
@@ -7,12 +8,12 @@ import {Row, Col, Form, Input, Select, Button, Typography, DatePicker } from 'an
 import ActionUser from '../actions/User'
 
 import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner'
-import ModalDialogs from '../components/ModalDialogs/ModalDialogs'
-import _ from 'lodash'
+import NotificationDialogs from '../components/NotificationDialogs/NotificationDialogs'
+
+const [errorNotificationDialogs, successNotificationDialogs] = NotificationDialogs(['error', 'success'])
 
 const { Title } = Typography
 const { Option } = Select
-const [errorModalDialogs] = ModalDialogs(['error'])
 
 const MyProfile = props => {
 
@@ -52,12 +53,16 @@ const MyProfile = props => {
 
   const onFinish = async (values) => {
     setOnSubmit(true)
-    //handle change password
-    await ActionUser.changePassword(values, handleChangePassError.bind(this))
+    //validate section password
+    const isValid = validateSectionPassword(values)
+    if(isValid) {
+      //handle change password
+      await ActionUser.changePassword(values, handleChangePassError.bind(this))
 
-    const dataPrepared = _prepareData(values)
-    //handle update user info
-    dispatch(ActionUser.update(dataPrepared, userInfo.id))
+      const dataPrepared = _prepareData(values)
+      //handle update user info
+      dispatch(ActionUser.update(dataPrepared, userInfo.id, handleUserUpdateSuccess.bind(this)))
+    }
     setOnSubmit(false)
   }
 
@@ -65,9 +70,20 @@ const MyProfile = props => {
     console.log('Failed:', errorInfo)
   }
 
-  const handleChangePassError = (e) => {
+  const handleUserUpdateSuccess = res => {
+    successNotificationDialogs.show({
+      message: 'Update profile successful',
+      description: ' ',
+      placement: 'top',
+      duration: 1.5,
+    })
     setOnSubmit(false)
   }
+
+  const handleChangePassError = e => {
+    setOnSubmit(false)
+  }
+
   const _prepareData = values => {
     let dataPrepared = {...values}
     dataPrepared.phone = `${values.phonePrefix}${values.phone}`
@@ -75,6 +91,28 @@ const MyProfile = props => {
     return dataPrepared
   }
 
+  const validateSectionPassword = values => {
+    const { password = '', oldPassword = '', confirm = ''} = values
+    if(password.length && oldPassword.length && confirm.length) {
+      return true
+    }
+    if(!password.length && !oldPassword.length && !confirm.length) {
+      values = _.omit(values, ['oldPassword', 'password', 'confirm'])
+      return true
+    }
+
+    if(password.length && !oldPassword.length) {
+      form.setFields([
+        {name: ['oldPassword'], errors: ['Please input your old password!']}
+      ])
+    }
+    if(password.length && !confirm.length) {
+      form.setFields([
+        {name: ['confirm'], errors: ['Please confirm your password!']}
+      ])
+    }
+    return false
+  }
 
   const disabledDate = current => {
     // Can not select days before today and today
@@ -122,7 +160,7 @@ const MyProfile = props => {
                 name='fullName'
                 rules={[
                   { required: true, message: 'Please input your username!' },
-                  { pattern: /^[a-zA-Z ]+$/, message: 'Full Name is invalid' },
+                  { pattern: /^[A-Za-z0-9 ]+$/, message: 'Full Name is invalid' },
                   { min: 3, message: 'Length of Full name must be >= 3 characters' },
                 ]}
               >
@@ -174,7 +212,6 @@ const MyProfile = props => {
                   </Checkbox>
                 </Form.Item>*/}
 
-
               <Form.Item>
                 &nbsp;
               </Form.Item>
@@ -182,7 +219,7 @@ const MyProfile = props => {
               <Form.Item
                 name='oldPassword'
                 rules={[
-                  { required: true, message: 'Please input your password!' },
+                  //{ required: true, message: 'Please input your old password!' },
                   { min: 6, max: 255, message: 'Length of old word must be >= 6 characters' },
                 ]}
               >
@@ -191,8 +228,16 @@ const MyProfile = props => {
               <Form.Item
                 name='password'
                 rules={[
-                  { required: true, message: 'Please input your new password!' },
+                  //{ required: true, message: 'Please input your new password!' },
                   { min: 6, max: 255, message: 'Length of new password must be >= 6 characters' },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (value && getFieldValue('oldPassword') === value) {
+                        return Promise.reject(new Error('New password must be old password'))
+                      }
+                      return Promise.resolve()
+                    },
+                  }),
                 ]}
               >
                 <Input.Password disabled={onSubmit} placeholder='New Password' />
@@ -201,10 +246,7 @@ const MyProfile = props => {
                 name="confirm"
                 dependencies={['password']}
                 rules={[
-                  {
-                    required: true,
-                    message: 'Please confirm your new password!',
-                  },
+                  //{required: true, message: 'Please confirm your new password!'},
                   ({ getFieldValue }) => ({
                     validator(_, value) {
                       if (!value || getFieldValue('password') === value) {

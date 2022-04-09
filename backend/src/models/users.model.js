@@ -16,7 +16,7 @@ module.exports = function (app) {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: /^[a-zA-Z ]+$/,
+        is: /^[A-Za-z0-9 ]+$/,
       },
     },
     email: {
@@ -34,7 +34,7 @@ module.exports = function (app) {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      //allowNull: false,
       validate: {
         len: [6, 255]
       },
