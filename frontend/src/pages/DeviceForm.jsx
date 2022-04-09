@@ -54,7 +54,7 @@ const DeviceForm = props => {
             md={{ span: 12 }}
           >
             {htmlSpin}
-            <Title className="mb-15">{formName}</Title>
+            <Title className="mb-15" level={2}>{formName}</Title>
             <Form
               form={form}
               name='DeviceForm'

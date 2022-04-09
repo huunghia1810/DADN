@@ -154,7 +154,7 @@ const Settings = props => {
             md={{ span: 24 }}
           >
             {htmlSpin}
-            <Title className="mb-15">&nbsp;</Title>
+            <Title className="mb-15" level={2}>Settings</Title>
             {/*<Title className="font-regular text-muted" level={5}>*/}
             {/*  Update your information*/}
             {/*</Title>*/}

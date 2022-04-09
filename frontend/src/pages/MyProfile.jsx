@@ -145,7 +145,7 @@ const MyProfile = props => {
             md={{ span: 12 }}
           >
             {htmlSpin}
-            <Title className="mb-15">My Profile</Title>
+            <Title className="mb-15" level={2}>My Profile</Title>
             <Title className="font-regular text-muted" level={5}>
               Update your information
             </Title>
