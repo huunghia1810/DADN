@@ -31,6 +31,13 @@ feathersJs dockerize
   docker build -t gas-system-management-image .
   docker run -d -p 3445:3445 --name gas-system-management-container gas-system-management-image
 
+  docker ps -a
+  docker stop docker_id
+  docker container rm docker_id
+
+  docker image ls
+  docker image rm gas-system-management-image
+
 open port
   https://hocvps.com/kiem-tra-va-mo-port-vps-tren-centos/
   https://hocvps.com/iptables/

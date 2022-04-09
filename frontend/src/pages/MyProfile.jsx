@@ -50,7 +50,6 @@ const MyProfile = props => {
   //handlers
   const handleCancel = () => {
     history.push('/dashboard')
-    //window.location.replace('/dashboard')
   }
 
   const onFinish = async (values) => {

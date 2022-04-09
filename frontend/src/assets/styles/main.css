@@ -3002,6 +3002,7 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
   box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
   margin: 10px 20px;
   z-index: 10;
+
 }
 
 aside.ant-layout-sider.ant-layout-sider-light.sider-primary.ant-layout-sider-primary.active-route
@@ -3085,7 +3086,7 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
   cursor: pointer;
 }
 
-#MyProfileForm .ant-btn, #SettingForm .ant-btn {
+#MyProfileForm .ant-btn, #SettingForm .ant-btn, #DeviceForm .ant-btn {
   margin-right: 8px;
 }
 

@@ -56,9 +56,9 @@ const App = props => {
         <Switch>
           <Route path='/sign-up' exact component={SignUp} />
           <Route path='/sign-in' exact component={SignIn} />
-          <Route path={'/:entity'} component={UserIsAuthenticated(Main)} />
-          <Route path={'/:entity/:action'} component={UserIsAuthenticated(Main)} />
           <Route path={'/:entity/:action/:id'} component={UserIsAuthenticated(Main)} />
+          <Route path={'/:entity/:action'} component={UserIsAuthenticated(Main)} />
+          <Route path={'/:entity'} component={UserIsAuthenticated(Main)} />
           <Route path='/' exact component={SignIn}></Route>
           <Route component={PageNotFound} />
         </Switch>

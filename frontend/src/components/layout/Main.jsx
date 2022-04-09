@@ -1,8 +1,9 @@
+import queryString from 'query-string'
+import _ from 'lodash'
+
 import React, { useState, useEffect } from 'react'
 import {useLocation, useParams} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import queryString from 'query-string'
-import _ from 'lodash'
 
 import { Layout, Drawer, Affix } from 'antd'
 import Sidenav from './Sidenav'
@@ -12,7 +13,8 @@ import Footer from './Footer'
 //----------import pages---------------
 import Home from './../../pages/Home'
 import Tables from './../../pages/Tables'
-import Devices from './../../pages/Devices'
+import DeviceList from './../../pages/DeviceList'
+import DeviceForm from './../../pages/DeviceForm'
 import MyProfile from './../../pages/MyProfile'
 import Settings from './../../pages/Settings'
 import Help from './../../pages/Help'
@@ -24,7 +26,7 @@ import PageNotFound from './../layout/PageNotFound/PageNotFound'
 const { Header: AntHeader, Content, Sider } = Layout
 
 function Main({ children }) {
-  let { entity, action } = useParams()
+  const { entity, action } = useParams()
 
   const User = useSelector(state => state.User) || {}
 
@@ -47,7 +49,7 @@ function Main({ children }) {
   const handleFixedNavbar = (type) => setFixed(type)
 
   let { pathname } = useLocation()
-  pathname = pathname.replace('/', '')
+  //pathname = pathname.replace('/', '')
 
   useEffect(() => {
     handleUpdateMainContent()
@@ -75,7 +77,11 @@ function Main({ children }) {
         mainComponent = <Tables></Tables>
         break
       case 'devices':
-        mainComponent = <Devices></Devices>
+        if(_.isUndefined(action) || (!_.isUndefined(action) && action === 'list')) {
+          mainComponent = <DeviceList></DeviceList>
+        }else if(action === 'add') {
+          mainComponent = <DeviceForm></DeviceForm>
+        }
         break
       case 'my-profile':
         mainComponent = <MyProfile></MyProfile>
@@ -170,7 +176,6 @@ function Main({ children }) {
             <Header
               onPress={openDrawer}
               name={pathname}
-              subName={pathname}
               handleSidenavColor={handleSidenavColor}
               handleSidenavType={handleSidenavType}
               handleFixedNavbar={handleFixedNavbar}
