@@ -20,7 +20,7 @@ module.exports = function (app) {
       type: DataTypes.INTEGER,
       defaultValue: 50,
       validate: {
-        min: 1,
+        min: 0,
         max: 100,
       }
     },
@@ -28,7 +28,7 @@ module.exports = function (app) {
       type: DataTypes.INTEGER,
       defaultValue: 50,
       validate: {
-        min: 1,
+        min: 0,
         max: 100,
       }
     },

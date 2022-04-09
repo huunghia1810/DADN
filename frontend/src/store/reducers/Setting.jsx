@@ -2,12 +2,12 @@ import * as constantSetting from '../../constants/Setting'
 
 const initialState = {
   fetching: false,
-  settings: {
-    fanMode: 1,
+  settingInfo: {
+    fanMode: 0,
     fanSpeed: 0,
-    ledBuzz: 1,
+    ledBuzz: 0,
     buzzLoudness: 0,
-    sendSMS: 1,
+    sendSMS: 0,
   },
   error: null,
 }
@@ -18,7 +18,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         fetching: true,
-        settings:{},
+        settingInfo: {},
         error: null,
       }
     case constantSetting.SETTING_GET_DATA_SUCCESS:
@@ -26,14 +26,36 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         fetching: false,
-        settings: data ? data[0] : {},
+        settingInfo: data.length ? data[0] : {},
         error: null,
       }
     case constantSetting.SETTING_GET_DATA_FAIL:
       return {
         ...state,
         fetching: false,
-        settings:{},
+        settingInfo: {},
+        error: action.payload,
+      }
+
+    case constantSetting.SETTING_ADD_DATA_PROCESSING:
+      return {
+        ...state,
+        fetching: true,
+        settingInfo: {},
+        error: null,
+      }
+    case constantSetting.SETTING_ADD_DATA_SUCCESS:
+      return {
+        ...state,
+        fetching: false,
+        settingInfo: action.payload,
+        error: null,
+      }
+    case constantSetting.SETTING_ADD_DATA_FAIL:
+      return {
+        ...state,
+        fetching: false,
+        settingInfo: {},
         error: action.payload,
       }
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {Switch, Route, Redirect, BrowserRouter as Router} from 'react-router-dom'
+import {Switch, Route, Redirect, BrowserRouter as Router, useHistory} from 'react-router-dom'
 import _ from 'lodash'
 
 import feathersClient from './feathersClient'
@@ -19,7 +19,7 @@ import './assets/styles/responsive.css'
 const [errorModalDialogs] = ModalDialogs(['error'])
 
 const App = props => {
-
+  const history = useHistory()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -37,6 +37,7 @@ const App = props => {
             okText: 'Ok',
             onOk() {
               if(context.error.code == 403) {
+                //history.push('/dashboard')
                 window.location.replace('/dashboard')
               } else {
                 //window.location.href('/sign-in')

@@ -5,11 +5,12 @@ import { useHistory } from 'react-router-dom'
 
 import {Row, Col, Slider, Button, Typography, Form, Input, Switch } from 'antd'
 
-import feathersClient from './../feathersClient'
-
 import ActionSetting from '../actions/Setting'
 
 import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner'
+import NotificationDialogs from '../components/NotificationDialogs/NotificationDialogs'
+
+const [errorNotificationDialogs, successNotificationDialogs] = NotificationDialogs(['error', 'success'])
 
 const { Title } = Typography
 const FIELDS = {
@@ -31,12 +32,12 @@ const Settings = props => {
   const [onSubmit, setOnSubmit] = useState(false)
   const [userInfo, setUserInfo] = useState({})
 
-  const [fanMode, setFanMode] = useState(true)
-  const [sendSms, setSendSms] = useState(false)
-  const [ledBuzz, setLedBuzz] = useState(true)
+  const [fanModeToggle, setFanModeToggle] = useState(false)
+  const [sendSMSToggle, setSendSMSToggle] = useState(false)
+  const [ledBuzzToggle, setLedBuzzToggle] = useState(false)
 
-  const [fanSpeed, setFanSpeed] = useState(true)
-  const [buzzLoudness, setBuzzLoudness] = useState(true)
+  const [fanSpeed, setFanSpeed] = useState(0)
+  const [buzzLoudness, setBuzzLoudness] = useState(0)
 
   const [disabledFanSpeed, setDisabledFanSpeed] = useState(false)
   const [disabledBuzzLoudness, setDisabledBuzzLoudness] = useState(false)
@@ -48,30 +49,63 @@ const Settings = props => {
   }, [])
 
   useEffect(() => {
-    if(Object.keys(Setting.settings).length) {
+    if(Object.keys(Setting.settingInfo).length) {
       //set value slider & switch
-      handleSetFormValue(Setting.settings)
+      handleSetFormValue(Setting.settingInfo)
     }
   }, [Setting])
 
   //handlers
-  const onFinish = async (values) => {
+  const onFinish = async values => {
     setOnSubmit(true)
+    const dataPrepared = _prepareData(values)
+
+    //debugger
+    dispatch(ActionSetting.creatSetting(dataPrepared, handleCreateSettingSuccess.bind(this), handleCreateSettingError.bind(this)))
   }
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo)
+  const onFinishFailed = error => {
+    console.log('Failed:', error)
+  }
+
+  const handleCreateSettingError = res => {
+    //not show dialog error because trigger from feathersClient.hooks in App.js
+    setOnSubmit(false)
+  }
+
+  const handleCreateSettingSuccess = res => {
+    const message = _.isUndefined(Setting.settingInfo.id) ? `Create setting successful` : `Update setting successful`
+    successNotificationDialogs.show({
+      message,
+      description: ' ',
+      placement: 'top',
+      duration: 1.5,
+    })
+    setOnSubmit(false)
+  }
+
+  const _prepareData = values => {
+    let dataPrepared = {...values}
+    debugger
+    if(!_.isUndefined(Setting.settingInfo.id)) {
+      dataPrepared.id = Setting.settingInfo.id
+    }
+
+    return dataPrepared
   }
 
   const onChange = (fieldName, value, e) => {
     switch (fieldName) {
       case FIELDS.FAN_MODE:
         setDisabledFanSpeed(!value)
+        setFanModeToggle(value)
         break
       case FIELDS.SEND_SMS:
+        setSendSMSToggle(value)
         break
       case FIELDS.LED_BUZZ:
         setDisabledBuzzLoudness(!value)
+        setLedBuzzToggle(value)
         break
 
       case FIELDS.FAN_SPEED:
@@ -81,25 +115,27 @@ const Settings = props => {
         setBuzzLoudness(value)
         break
     }
+    form.setFieldsValue({
+      [fieldName]: typeof value == 'boolean' ? (value === true ? '1' : '0') : value,
+    })
     console.log('onChange: ', fieldName, value, e);
-  }
-
-  const onAfterChange = value => {
-    console.log('onAfterChange: ', value);
   }
 
   const handleCancel = () => {
     history.push('/dashboard')
-    //window.location.replace('/dashboard')
   }
 
   const handleSetFormValue = values => {
+    debugger
     form.setFieldsValue(values)
 
     //set values for Switch, Slider
-    setSendSms(!!values.sendSMS)
-    setFanMode(!!values.fanMode)
-    setLedBuzz(!!values.ledBuzz)
+    setSendSMSToggle(values.sendSMS == 1 ? true : false)
+    setFanModeToggle(values.fanMode == 1 ? true : false)
+    setLedBuzzToggle(values.ledBuzz == 1 ? true : false)
+
+    setDisabledFanSpeed(values.fanMode == 0)
+    setDisabledBuzzLoudness(values.ledBuzz == 0)
 
     setFanSpeed(values.fanSpeed)
     setBuzzLoudness(values.buzzLoudness)
@@ -125,7 +161,7 @@ const Settings = props => {
             <Form
               form={form}
               name='SettingForm'
-              //initialValues={{ phonePrefix: '84' }}
+              initialValues={{ fanMode: '0', ledBuzz: '0', sendSMS: '0', fanSpeed: '0', buzzLoudness: '0' }}
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               className='row-col'
@@ -136,7 +172,7 @@ const Settings = props => {
                 label="Fan Mode"
                 name='fanMode'
               >
-                <Switch className="device-toggle" onChange={onChange.bind(this, FIELDS.FAN_MODE)} defaultChecked={fanMode} />
+                <Switch className="device-toggle" onChange={onChange.bind(this, FIELDS.FAN_MODE)} defaultChecked={true} checked={fanModeToggle} />
                 <Input disabled={onSubmit} type='hidden' placeholder='Fan Mode' />
               </Form.Item>
 
@@ -152,7 +188,7 @@ const Settings = props => {
                 label="LED & Buzz Mode"
                 name='ledBuzz'
               >
-                <Switch className="device-toggle" onChange={onChange.bind(this, FIELDS.LED_BUZZ)} defaultChecked={ledBuzz} />
+                <Switch className="device-toggle" onChange={onChange.bind(this, FIELDS.LED_BUZZ)} defaultChecked={true} checked={ledBuzzToggle} />
                 <Input disabled={onSubmit} type='hidden' placeholder='Warn Gas Leak Through LED + Buzz' />
               </Form.Item>
 
@@ -168,7 +204,7 @@ const Settings = props => {
                 label="Warn Gas Leak Through SMS"
                 name='sendSMS'
               >
-                <Switch className="device-toggle" onChange={onChange.bind(this, FIELDS.SEND_SMS)} defaultChecked={sendSms} />
+                <Switch className="device-toggle" onChange={onChange.bind(this, FIELDS.SEND_SMS)} defaultChecked={true} checked={sendSMSToggle} />
                 <Input disabled={onSubmit} type='hidden' placeholder='Warn Gas Leak Through SMS' />
               </Form.Item>
 

@@ -12,9 +12,9 @@ module.exports = {
     all: [
       authenticate('jwt'),
       attachUserInfo(),
-      checkPermissions({
-        roles: [ 'aaaa' ],
-      }),
+      // checkPermissions({
+      //   roles: [ 'aaaa' ],
+      // }),
     ],
     find: [
       addFilterByCurrentUser(),
