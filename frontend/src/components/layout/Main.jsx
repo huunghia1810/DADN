@@ -12,7 +12,6 @@ import Footer from './Footer'
 
 //----------import pages---------------
 import Home from './../../pages/Home'
-import Tables from './../../pages/Tables'
 import DeviceList from './../../pages/DeviceList'
 import DeviceForm from './../../pages/DeviceForm'
 import MyProfile from './../../pages/MyProfile'
@@ -72,9 +71,6 @@ function Main({ children }) {
     switch (entity) {
       case 'dashboard':
         mainComponent = <Home></Home>
-        break
-      case 'tables':
-        mainComponent = <Tables></Tables>
         break
       case 'devices':
         if(_.isUndefined(action) || (!_.isUndefined(action) && action === 'list')) {

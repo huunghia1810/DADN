@@ -9,6 +9,8 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 import ActionDevice from '../actions/Device'
 
+import * as constantDevice from '../constants/Device'
+
 import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner'
 import NotificationDialogs from '../components/NotificationDialogs/NotificationDialogs'
 
@@ -17,16 +19,8 @@ const [errorNotificationDialogs, successNotificationDialogs] = NotificationDialo
 const { Title } = Typography
 const { Option } = Select
 
-const STATUS = {
-  ACTIVE: 'active',
-  INACTIVE: 'inactive',
-}
-const DEVICE_TYPES = {
-  BUZZER: 'BUZZER',
-  FAN: 'FAN',
-  GAS_SENSOR: 'GAS_SENSOR',
-  LED: 'LED',
-}
+const { STATUS, DEVICE_TYPES } = constantDevice
+
 const DeviceForm = props => {
   const history = useHistory()
   const { action, id } = useParams()
@@ -87,7 +81,7 @@ const DeviceForm = props => {
   }
 
   const handleCancel = () => {
-    history.push('/dashboard')
+    history.push('/devices')
   }
 
   const _prepareData = values => {

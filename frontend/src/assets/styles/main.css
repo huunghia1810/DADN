@@ -3102,6 +3102,10 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 #DeviceForm .device-row-item .ant-select-selector .ant-select-selection-item {
   line-height: 40px;
 }
+.devices-list {
+  padding-left: 15px;
+  padding-right: 15px;
+}
 
 /*.device-toggle {*/
 /*  height: 30px;*/

@@ -10,7 +10,8 @@ class ActionDevice {
       dispatch({type: constantDevice.DEVICE_GET_DATA_PROCESSING})
       const query = {
         query: {
-          $sort: {id: 1}
+          $sort: {id: 1},
+          $limit: 1000
         }
       }
 
