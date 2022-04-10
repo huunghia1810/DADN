@@ -1,14 +1,14 @@
-import * as constantNotification from '../../constants/Notification'
+import * as constantAlert from '../../constants/Alert'
 
 const initialState = {
   fetching: false,
 
-  listNotifications:[],
+  listAlerts:[],
   total: 0,
   limit: 0,
   skip: 0,
 
-  listNotificationsUnread:[],
+  listAlertsUnread:[],
   totalUnread: 0,
   limitUnread: 0,
   skipUnread: 0,
@@ -18,30 +18,30 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case constantNotification.NOTIFICATION_GET_LIST_DATA_PROCESSING:
+    case constantAlert.ALERT_GET_LIST_DATA_PROCESSING:
       return {
         ...state,
         fetching: true,
-        listNotifications: [],
+        listAlerts: [],
         total: 0,
         limit: 0,
         skip: 0,
 
-        listNotificationsUnread:[],
+        listAlertsUnread:[],
         totalUnread: 0,
         limitUnread: 0,
         skipUnread: 0,
 
         error: null,
       }
-    case constantNotification.NOTIFICATION_GET_LIST_DATA_SUCCESS:
-    case constantNotification.NOTIFICATION_GET_LIST_DATA_UNREAD_SUCCESS:
+    case constantAlert.ALERT_GET_LIST_DATA_SUCCESS:
+    case constantAlert.ALERT_GET_LIST_DATA_UNREAD_SUCCESS:
       const { total, limit, skip, data, type } = action.payload
-      if(type === constantNotification.NOTIFICATION_GET_TYPE_UNREAD) {
+      if(type === constantAlert.ALERT_GET_TYPE_UNREAD) {
         return {
           ...state,
           fetching: false,
-          listNotificationsUnread: data,
+          listAlertsUnread: data,
           totalUnread: total,
           limitUnread: limit,
           skipUnread: skip,
@@ -51,23 +51,23 @@ export default function reducer(state = initialState, action) {
         return {
           ...state,
           fetching: false,
-          listNotifications: data,
+          listAlerts: data,
           total,
           limit,
           skip,
           error: null,
         }
       }
-    case constantNotification.NOTIFICATION_GET_LIST_DATA_FAIL:
+    case constantAlert.ALERT_GET_LIST_DATA_FAIL:
       return {
         ...state,
         fetching: false,
-        listNotifications: [],
+        listAlerts: [],
         total: 0,
         limit: 0,
         skip: 0,
 
-        listNotificationsUnread:[],
+        listAlertsUnread:[],
         totalUnread: 0,
         limitUnread: 0,
         skipUnread: 0,
@@ -75,18 +75,18 @@ export default function reducer(state = initialState, action) {
         error: action.payload,
       }
 
-    case constantNotification.NOTIFICATION_UPDATE_NOTIFY_PROCESSING:
+    case constantAlert.ALERT_UPDATE_NOTIFY_PROCESSING:
       return {
         ...state,
         fetching: true,
         error: null,
       }
-    case constantNotification.NOTIFICATION_UPDATE_NOTIFY_SUCCESS:
+    case constantAlert.ALERT_UPDATE_NOTIFY_SUCCESS:
       //nothing
       return {
         ...state,
       }
-    case constantNotification.NOTIFICATION_UPDATE_NOTIFY_FAIL:
+    case constantAlert.ALERT_UPDATE_NOTIFY_FAIL:
       return {
         ...state,
         fetching: false,
