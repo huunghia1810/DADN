@@ -29,7 +29,6 @@ class ActionDevice {
         if(typeof callbackSuccess == 'function') {
           callbackSuccess(response)
         }
-        debugger
         dispatch({type: constantDevice.DEVICE_ADD_DATA_SUCCESS, payload: response})
       }).catch(error => {
         if(typeof callbackError == 'function') {

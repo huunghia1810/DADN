@@ -34,7 +34,7 @@ exports.Devices = class Devices extends Service {
         //throw new errors.BadRequest(`${e.message}`)
       }
       //return resCreate
-      res = [...resCreate, ...resUpdate]
+      res = _.sortBy([...resCreate, ...resUpdate], 'id')
 
       //handle remove item not in list id of res
       const arrIdsEffect = res.map(item => item.id)

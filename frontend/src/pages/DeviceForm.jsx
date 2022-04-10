@@ -17,6 +17,10 @@ const [errorNotificationDialogs, successNotificationDialogs] = NotificationDialo
 const { Title } = Typography
 const { Option } = Select
 
+const STATUS = {
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
+}
 const DEVICE_TYPES = {
   BUZZER: 'BUZZER',
   FAN: 'FAN',
@@ -45,7 +49,7 @@ const DeviceForm = props => {
   useEffect(() => {
     try {
       if(Object.keys(User.authInfo.user).length) {
-        //form.setFieldsValue({listDevices: [{fieldKey: 123, isListField: true, key: 123, name: '', code: '', type: DEVICE_TYPES.BUZZER}]})
+        //form.setFieldsValue({listDevices: [{fieldKey: 123, isListField: true, key: 123, name: '', code: '', status: STATUS.ACTIVE, type: DEVICE_TYPES.BUZZER}]})
       }
     } catch (e) {}
   }, [User])
@@ -94,11 +98,11 @@ const DeviceForm = props => {
   }
 
   const _setFormData = () => {
-    let _listDevices = [{id: '', name: '', code: '', type: DEVICE_TYPES.BUZZER}]
-    //_listDevices = [{fieldKey: 123, isListField: true, key: 123, name: '', code: '', type: DEVICE_TYPES.BUZZER}]
+    let _listDevices = [{id: '', name: '', status: STATUS.ACTIVE, code: '', type: DEVICE_TYPES.BUZZER}]
+    //_listDevices = [{fieldKey: 123, isListField: true, key: 123, name: '', status: STATUS.ACTIVE, code: '', type: DEVICE_TYPES.BUZZER}]
     if(Device.listDevices.length) {
       _listDevices = Device.listDevices.map(device => {
-        return {id: device.id, name: device.name, code: device.code, type: device.type}
+        return {id: device.id, name: device.name, status: device.status, code: device.code, type: device.type}
       })
     }
     form.setFieldsValue({listDevices: _listDevices})
@@ -159,7 +163,7 @@ const DeviceForm = props => {
                               <Input disabled={onSubmit} type='hidden' />
                             </Form.Item>
                           </Col>
-                          <Col xs={24} sm={24} md={8} lg={8}>
+                          <Col xs={24} sm={24} md={6} lg={6}>
                             <Form.Item
                               {...restField}
                               name={[name, 'code']}
@@ -172,7 +176,7 @@ const DeviceForm = props => {
                               <Input disabled={onSubmit} placeholder="Code" />
                             </Form.Item>
                           </Col>
-                          <Col xs={24} sm={20} md={6} lg={6}>
+                          <Col xs={24} sm={20} md={4} lg={4}>
                             <Form.Item
                               {...restField}
                               name={[name, 'type']}
@@ -183,6 +187,18 @@ const DeviceForm = props => {
                                 <Option value={DEVICE_TYPES.FAN}>Fan</Option>
                                 <Option value={DEVICE_TYPES.GAS_SENSOR}>Gas Sensor</Option>
                                 <Option value={DEVICE_TYPES.LED}>Led</Option>
+                              </Select>
+                            </Form.Item>
+                          </Col>
+                          <Col xs={24} sm={20} md={4} lg={4}>
+                            <Form.Item
+                              {...restField}
+                              name={[name, 'status']}
+                              rules={[{ required: true }]}
+                            >
+                              <Select disabled={onSubmit}>
+                                <Option value={STATUS.ACTIVE}>Active</Option>
+                                <Option value={STATUS.INACTIVE}>Inactive</Option>
                               </Select>
                             </Form.Item>
                           </Col>
@@ -199,7 +215,7 @@ const DeviceForm = props => {
                       </>
                     ))}
                     <Form.Item wrapperCol={{ offset: 6, span: 12 }}>
-                      <Button type="dashed" disabled={onSubmit} onClick={() => add({id: '', name: '', code: '', type: DEVICE_TYPES.BUZZER})} block icon={<PlusOutlined />}>
+                      <Button type="dashed" disabled={onSubmit} onClick={() => add({id: '', name: '', status: STATUS.ACTIVE, code: '', type: DEVICE_TYPES.BUZZER})} block icon={<PlusOutlined />}>
                         Add device
                       </Button>
                     </Form.Item>

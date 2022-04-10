@@ -604,7 +604,7 @@ const DeviceList = props => {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Authors Table"
+              title="List devices"
               extra={
                 <>
                   <Button onClick={() => history.push('/devices/modify')} type="primary">
