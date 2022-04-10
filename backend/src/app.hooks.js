@@ -1,10 +1,11 @@
 // Application hooks that run for every service
+const addFilterByExceptItemRemoved = require('./hooks/add-filter-by-except-removed')
 
 module.exports = {
   before: {
     all: [],
-    find: [],
-    get: [],
+    find: [addFilterByExceptItemRemoved()],
+    get: [addFilterByExceptItemRemoved()],
     create: [],
     update: [],
     patch: [],

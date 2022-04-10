@@ -42,6 +42,11 @@ module.exports = function (app) {
       allowNull: false,
       defaultValue: 1,
     },
+    isDeleted: {
+      type: DataTypes.ENUM(1, 0),
+      allowNull: false,
+      defaultValue: 0,
+    },
     createdBy: {
       type: DataTypes.INTEGER,
       field: 'createdBy'

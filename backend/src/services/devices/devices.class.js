@@ -9,30 +9,58 @@ exports.Devices = class Devices extends Service {
   }
 
   async create(data, params) { //overwrite method post
-    let dataUpdate = [],
-      dataCreate = [],
-      resCreate = [],
-      resUpdate = []
-    try {
-      data.map(item => {
-        if(typeof item.id == 'number') {
-          dataUpdate.push(item)
-        } else {
-          dataCreate.push(item)
+    if(Array.isArray(data)) {
+      let dataUpdate = [],
+        dataCreate = [],
+        resCreate = [],
+        resUpdate = [],
+        res = []
+      try {
+        data.map(item => {
+          if(typeof item.id == 'number') {
+            dataUpdate.push(item)
+          } else {
+            dataCreate.push(item)
+          }
+        })
+        if(dataCreate.length) {
+          resCreate = await super.create(dataCreate, params)
         }
-      })
-      if(dataCreate.length) {
-        resCreate = await super.create(dataCreate, params)
+        if(dataUpdate.length) {
+          resUpdate = await Promise.all(dataUpdate.map(curDevice => this._updateDevice(curDevice)));
+        }
+      } catch (e) {
+        throw e
+        //throw new errors.BadRequest(`${e.message}`)
       }
-      if(dataUpdate.length) {
-        resUpdate = await super.patch(null, dataUpdate, params)
+      //return resCreate
+      res = [...resCreate, ...resUpdate]
+
+      //handle remove item not in list id of res
+      const arrIdsEffect = res.map(item => item.id)
+      const query = {
+        id: {$nin: arrIdsEffect},
+        createdBy: params.user.id
       }
-    } catch (e) {
-      throw e
-      //throw new errors.BadRequest(`${e.message}`)
+      await this.app.service('devices').patch(null, {isDeleted: 1}, {query: query})
+
+      return res
+    } else if(typeof data == 'object') {
+      return super.create(data, params)
     }
-    return resCreate
-    //return [...resCreate, ...resUpdate]
+  }
+
+  _updateDevice(objDevice) {
+    const self = this,
+      { id } = objDevice
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await self.app.service('devices').patch(id, _.omit(objDevice, ['id']))
+        resolve(res)
+      } catch (e) {
+        reject(e)
+      }
+    })
   }
 
 }

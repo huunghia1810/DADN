@@ -106,7 +106,7 @@ const DeviceForm = props => {
 
   //render
   const htmlSpin = onSubmit ? <LoadingSpinner/> : null
-  const formName = !_.isUndefined(id) ? `Update device` : `New device`
+  //const formName = !_.isUndefined(id) ? `Update device` : `New device`
   return (
     <>
       <div className="tabled">
@@ -117,7 +117,7 @@ const DeviceForm = props => {
             lg={{ span: 18, offset: 0 }}
           >
             {htmlSpin}
-            <Title className="mb-15" level={2}>{formName}</Title>
+            <Title className="mb-15" level={2}>Modify device(s)</Title>
             <Form
               form={form}
               name='DeviceForm'
@@ -137,7 +137,7 @@ const DeviceForm = props => {
               >
                 {(fields, { add, remove }) => (
                   <>
-                    {fields.map(({ key, name, ...restField }) => (
+                    {fields.map(({ key, id, name, ...restField }) => (
                       <>
                         <Row className="device-row-item" gutter={[24, 0]}>
                           <Col xs={24} sm={24} md={8} lg={8}>
@@ -188,7 +188,11 @@ const DeviceForm = props => {
                           </Col>
                           <Col xs={24} sm={4} md={2} lg={2}>
                             <MinusCircleOutlined style={{ fontSize: '30px', lineHeight: '35px', marginTop: '5px'}} onClick={() => {
-                              return !onSubmit && fields.length > 1 ? remove(name) : null
+                              if(!onSubmit && fields.length > 1) {
+                                return remove(name)
+                              } else {
+                                return null
+                              }
                             }} />
                           </Col>
                         </Row>
@@ -196,7 +200,7 @@ const DeviceForm = props => {
                     ))}
                     <Form.Item wrapperCol={{ offset: 6, span: 12 }}>
                       <Button type="dashed" disabled={onSubmit} onClick={() => add({id: '', name: '', code: '', type: DEVICE_TYPES.BUZZER})} block icon={<PlusOutlined />}>
-                        Add field
+                        Add device
                       </Button>
                     </Form.Item>
                   </>

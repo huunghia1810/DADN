@@ -15,7 +15,7 @@ import {
   Typography,
 } from "antd"
 
-import {HomeOutlined, PlusOutlined, ToTopOutlined} from '@ant-design/icons'
+import {EditOutlined, PlusOutlined, ToTopOutlined} from '@ant-design/icons'
 import {Link, NavLink, useHistory} from 'react-router-dom'
 
 // Images
@@ -607,9 +607,9 @@ const DeviceList = props => {
               title="Authors Table"
               extra={
                 <>
-                  <Button onClick={() => history.push('/devices/add')} type="primary">
-                    <span><PlusOutlined /></span>
-                    <span>Add</span>
+                  <Button onClick={() => history.push('/devices/modify')} type="primary">
+                    <span><EditOutlined /></span>
+                    <span>Modify</span>
                   </Button>
                 </>
               }

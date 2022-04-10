@@ -18,6 +18,11 @@ module.exports = function (app) {
     roles: {
       type: DataTypes.TEXT,
     },
+    isDeleted: {
+      type: DataTypes.ENUM(1, 0),
+      allowNull: false,
+      defaultValue: 0,
+    },
   }, {
     hooks: {
       beforeCount(options) {

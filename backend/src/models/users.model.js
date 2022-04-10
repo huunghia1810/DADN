@@ -58,6 +58,11 @@ module.exports = function (app) {
         // }
       }
     },
+    isDeleted: {
+      type: DataTypes.ENUM(1, 0),
+      allowNull: false,
+      defaultValue: 0,
+    },
     lastLoggedIn: {
       type: DataTypes.DATE
     }

@@ -79,7 +79,7 @@ function Main({ children }) {
       case 'devices':
         if(_.isUndefined(action) || (!_.isUndefined(action) && action === 'list')) {
           mainComponent = <DeviceList></DeviceList>
-        }else if(action === 'add') {
+        }else if(action === 'modify') {
           mainComponent = <DeviceForm></DeviceForm>
         }
         break
