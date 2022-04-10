@@ -4,7 +4,7 @@ import * as constantSetting from '../constants/Setting'
 
 import feathersClient from './../feathersClient'
 
-class ActionNotification {
+class ActionSetting {
   getSettings() {
     return function (dispatch) {
       dispatch({type: constantSetting.SETTING_GET_DATA_PROCESSING})
@@ -41,4 +41,4 @@ class ActionNotification {
   }
 }
 
-export default new ActionNotification()
+export default new ActionSetting()

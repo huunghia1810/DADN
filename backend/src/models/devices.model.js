@@ -27,6 +27,11 @@ module.exports = function (app) {
         len: [1,255],
       }
     },
+    type: {
+      type: DataTypes.ENUM('BUZZER', 'FAN', 'GAS_SENSOR', 'LED'),
+      allowNull: false,
+      defaultValue: 'BUZZER',
+    },
     status: {
       type: DataTypes.ENUM('active', 'inactive'),
       allowNull: false,

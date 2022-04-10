@@ -1,3 +1,5 @@
+import {useEffect} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 
 import {
   Row,
@@ -13,8 +15,8 @@ import {
   Typography,
 } from "antd"
 
-import { ToTopOutlined } from "@ant-design/icons"
-import { Link } from "react-router-dom"
+import {HomeOutlined, PlusOutlined, ToTopOutlined} from '@ant-design/icons'
+import {Link, NavLink, useHistory} from 'react-router-dom'
 
 // Images
 import ava1 from "../assets/images/logo-shopify.svg"
@@ -29,6 +31,7 @@ import face4 from "../assets/images/face-4.jpg"
 import face5 from "../assets/images/face-5.jpeg"
 import face6 from "../assets/images/face-6.jpeg"
 import pencil from "../assets/images/pencil.svg"
+import ActionDevice from '../actions/Device'
 
 const { Title } = Typography
 
@@ -577,6 +580,20 @@ const dataproject = [
 ]
 
 const DeviceList = props => {
+  const history = useHistory()
+  const dispatch = useDispatch()
+
+  const User = useSelector(state => state.User) || {}
+  const Device = useSelector(state => state.Device) || {}
+
+  useEffect(() => {
+    dispatch(ActionDevice.getDevices())
+  }, [])
+
+  useEffect(() => {
+    console.log('ggggggggg____________', Device.listDevices)
+  }, [Device])
+
   const onChange = (e) => console.log(`radio checked:${e.target.value}`)
 
   return (
@@ -590,10 +607,10 @@ const DeviceList = props => {
               title="Authors Table"
               extra={
                 <>
-                  <Radio.Group onChange={onChange} defaultValue="a">
-                    <Radio.Button value="a">All</Radio.Button>
-                    <Radio.Button value="b">ONLINE</Radio.Button>
-                  </Radio.Group>
+                  <Button onClick={() => history.push('/devices/add')} type="primary">
+                    <span><PlusOutlined /></span>
+                    <span>Add</span>
+                  </Button>
                 </>
               }
             >

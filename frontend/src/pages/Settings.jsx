@@ -86,7 +86,6 @@ const Settings = props => {
 
   const _prepareData = values => {
     let dataPrepared = {...values}
-    debugger
     if(!_.isUndefined(Setting.settingInfo.id)) {
       dataPrepared.id = Setting.settingInfo.id
     }

@@ -1907,6 +1907,7 @@ body {
   height: 40px;
   border: 1px solid #d9d9d9;
 }
+
 .ant-picker, .ant-input-password {
   border-radius: 6px;
   height: 40px;
@@ -3088,6 +3089,18 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 
 #MyProfileForm .ant-btn, #SettingForm .ant-btn, #DeviceForm .ant-btn {
   margin-right: 8px;
+}
+
+#DeviceForm .device-row-item .ant-select-selector {
+  border-radius: 6px;
+  font-weight: 600;
+  color: #8c8c8c;
+  height: 40px;
+  border: 1px solid #d9d9d9;
+}
+
+#DeviceForm .device-row-item .ant-select-selector .ant-select-selection-item {
+  line-height: 40px;
 }
 
 /*.device-toggle {*/
