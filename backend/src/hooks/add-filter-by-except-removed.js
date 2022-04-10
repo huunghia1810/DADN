@@ -1,7 +1,7 @@
 /* See hooks document: https://docs.feathersjs.com/guides/basics/hooks.html */
 const _ = require('lodash')
 const moment = require('moment')
-const checkPermissions = require('feathers-permissions');
+const checkPermissions = require('feathers-permissions')
 
 const { Forbidden } = require('@feathersjs/errors')
 

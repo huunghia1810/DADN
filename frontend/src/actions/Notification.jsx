@@ -10,6 +10,7 @@ class ActionNotification {
             dispatch({type: constantNotification.NOTIFICATION_GET_LIST_DATA_PROCESSING})
             const query = {
                 isDeleted: { $ne: 1 },
+                type: 'notify',
                 $sort: { id: -1 },
                 $limit: 5, //default limit 5 items
             }
