@@ -48,3 +48,10 @@ download file:
   https://github.com/feathersjs/feathers/issues/1581
   https://stackoverflow.com/questions/55132760/creating-excel-file-and-writing-to-it-with-exceljs
   https://codesandbox.io/s/yq7r1oror1?file=/App.js:517-528
+
+Adafruit with NodeJS (use library mtqq):
+  docs: https://learn.adafruit.com/adafruit-io/mqtt-api?view=all#mqtt-api
+  quick notes:
+    connectUrl = `mqtt://io.adafruit.com`
+    topic = 'nghiahuynhcse/feeds/gasleak'
+

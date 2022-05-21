@@ -28,5 +28,15 @@
       "passwordField": "password"
     }
   },
-  "mysql": "mysql://gassystem:gasSystem@3322@45.32.103.9:3306/gas_system_management"
+  "mysql": "mysql://gassystem:gasSystem@3322@45.32.103.9:3306/gas_system_management",
+  "adafruit": {
+    "connectUrl": "mqtt://io.adafruit.com",
+    "arrTopics": {
+      "gasleak": "nghiahuynhcse/feeds/gasleak",
+      "gasdata": "nghiahuynhcse/feeds/gasdata"
+    },
+    "clientId": "mqtt_1117",
+    "username": "nghiahuynhcse",
+    "password": "aio_OYJo92RdcuJeZl1tPIRWuWO6zMN6"
+  }
 }
