@@ -29,14 +29,19 @@ const conv = num => [
 
 
 class MqttAdapter {
-  constructor ({ connectUrl, arrTopics, clientId, username, password }) {
+  constructor (app, callback) {
+    const adafruitConf = app.get('adafruit')
+    const { connectUrl, arrTopics, clientId, username, password } = adafruitConf
+
     this.connectUrl = connectUrl
     this.clientId = clientId
     this.username = username
     this.password = password
     this.arrTopics = arrTopics || []
+    this.callback = callback
 
     this._connection = null
+    this.app = app
 
     this.connect()
 
@@ -57,7 +62,7 @@ class MqttAdapter {
 
     client.on('connect', () => {
       console.log('Connected')
-      setInterval(() => {
+      //setInterval(() => {
         let rand = Math.random() * 100
         const maximum = 10, minimum = 4
         rand = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum
@@ -65,7 +70,7 @@ class MqttAdapter {
           console.log("Pushed: " + rand)
           //client.end() // Close the connection when published
         })
-      }, 1000)
+      //}, 1000)
     })
     client.on('message', function(topic, payload, packet) {
       console.log(`Received______ '${topic}'`)
@@ -77,6 +82,7 @@ class MqttAdapter {
       this.disconnect()
       this.connect()
     }
+    const self = this
     this._connection = mqtt.connect(this.connectUrl, {
       clientId: this.clientId,
       clean: true,
@@ -85,6 +91,29 @@ class MqttAdapter {
       password: this.password,
       keepalive: 0,
     })
+
+    let listTopic = Object.keys(this.arrTopics).map(key => {
+      return this.arrTopics[key]
+    })
+    this._connection.subscribe(listTopic)
+
+    this._connection.on('connect', () => {
+      console.log('Connected')
+
+      /*let rand = Math.random() * 100
+      const maximum = 10, minimum = 4
+      rand = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum
+      this._connection.publish('nghiahuynhcse/feeds/gasleak', String(rand) + '.99', function() {
+        console.log("Pushed: " + rand)
+      })*/
+    })
+
+    //consume
+    this._connection.on('message', function(topic, payload, packet) {
+      console.log(`Received______ topic | data: '${topic}' | '${topic}'`)
+      self.callback(topic, payload)
+    })
+
   }
 
   disconnect() {
@@ -94,20 +123,11 @@ class MqttAdapter {
     }
   }
 
-  async startConsumer() {
-    if(Object.keys(this.arrTopics).length) {
-
-      Object.keys(this.arrTopics).map(key => {
-        const topic = this.arrTopics[key]
-        this._connection.subscribe(topic)
-
-        this._connection.on('message', function(topic, payload, packet) {
-          console.log(`Received______ '${topic}'`)
-        })
-      })
-    }
+  async sendMessage(topic, dataItem, user) {
+    this._connection.publish(this.arrTopics[topic], String(dataItem), function() {
+      console.log(`Pushed data '${dataItem}' to topic '${topic}'`)
+    })
   }
-
 }
 
 module.exports = MqttAdapter

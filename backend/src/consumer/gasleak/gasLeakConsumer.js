@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const moment = require('moment')
-const { MqttConsumer } = require('../../dispatcher/gas-leak')
+const { MqttAdapter } = require('../../dispatcher/gas-leak')
 
 class cGasLeakConsumer {
   constructor(app) {
@@ -9,10 +9,9 @@ class cGasLeakConsumer {
   }
 
   init() {
-    this.arrTopics = {
-      GAS_LEAK : 'gasleak',
-      GAS_DATA : 'gasdata',
-    }
+    const adafruitConf = this.app.get('adafruit')
+    const { arrTopics } = adafruitConf
+    this.arrTopics = arrTopics
   }
 
   async handleSubscribe(topic, payload) {
@@ -35,13 +34,14 @@ class cGasLeakConsumer {
   //----------------------private functions-----------------------
   //----------------------private functions-----------------------
   async _handleSaveDataGas(topic, strData) {
-    if(topic === this.arrTopics.GAS_LEAK) {
+    if(topic === this.arrTopics.gasleak) {
       const objData = {
         index: strData,
+        createdBy: 1
       }
       const arrRes = await this.app.service('gas-leak').create(objData)
       return arrRes
-    } else if(topic === this.arrTopics.GAS_DATA) {
+    } else if(topic === this.arrTopics.gasdata) {
       //check data exist
       const dataGasData = await this.app.service('gas-data').find({query: {
           id: {$gt: 0}
@@ -50,7 +50,7 @@ class cGasLeakConsumer {
         status: strData == 1 ? 'active': 'inactive',
       }
       if(dataGasData.data.length) { //exist -> update
-        const arrRes = await this.app.service('gas-data').patch(dataGasData.data[0], objData)
+        const arrRes = await this.app.service('gas-data').patch(dataGasData.data[0].id, objData)
         return arrRes
       } else { //not exist -> create
         const arrRes = await this.app.service('gas-data').create(objData)
@@ -66,9 +66,11 @@ class cGasLeakConsumer {
 
 const gasLeakConsumer = async (app) => {
   const insGasLeakConsumer = new cGasLeakConsumer(app)
-  const insMqttConsumer = new MqttConsumer(app)
-  await insMqttConsumer.startConsumer()
-  await insMqttConsumer.subscribe(insGasLeakConsumer.handleSubscribe.bind(insGasLeakConsumer))
+  const insMqttAdapter = new MqttAdapter(app, insGasLeakConsumer.handleSubscribe.bind(insGasLeakConsumer))
+  app.mqtt = insMqttAdapter
+
+  //await insMqttAdapter.startConsumer()
+  //await insMqttAdapter.subscribe(insGasLeakConsumer.handleSubscribe.bind(insGasLeakConsumer))
 }
 
 module.exports = gasLeakConsumer

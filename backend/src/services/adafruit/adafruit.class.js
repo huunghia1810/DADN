@@ -1,6 +1,5 @@
 const _ = require('lodash')
 const { Service } = require('feathers-sequelize')
-const { MqttProducer } = require("../../dispatcher/gas-leak")
 
 const ACTIONS = {
   PRODUCER: 'producer',
@@ -24,9 +23,9 @@ exports.Adafruit = class Adafruit extends Service {
 
     switch (action) {
       case ACTIONS.PRODUCER:
-        const insMqttProducer = new MqttProducer(this.app)
+        const insMqtt = this.app.mqtt
         data.map(dataItem => {
-          insMqttProducer.sendMessage(topic, parseFloat(dataItem))
+          insMqtt.sendMessage(topic, parseFloat(dataItem), params.user)
         })
         break
       default: //nothing

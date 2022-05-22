@@ -1,5 +1,5 @@
-const MqttConsumer = require('./mqtt')
+const Gasleak = require('./gasleak')
 
 module.exports = function configure(app) {
-  app.configure(MqttConsumer)
+  app.configure(Gasleak)
 }

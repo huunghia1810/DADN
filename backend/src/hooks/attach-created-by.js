@@ -10,12 +10,14 @@ module.exports = function attachCreatedBy(options = {roles: []}) {
     try {
       const { app, data, params: { user } } = context
 
-      if(Array.isArray(data)) {
-        data.map(item => {
-          item.createdBy = user.id
-        })
-      } else if(typeof data == 'object') {
-        data.createdBy = user.id
+      if(user) {
+        if(Array.isArray(data)) {
+          data.map(item => {
+            item.createdBy = user.id
+          })
+        } else if(typeof data == 'object') {
+          data.createdBy = user.id
+        }
       }
     } catch (e) {}
 
