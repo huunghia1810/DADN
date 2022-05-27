@@ -13,7 +13,7 @@ module.exports = {
       attachUserInfo()
     ],
     find: [
-      addFilterByCurrentUser(),
+      //addFilterByCurrentUser(),
       addAssociations({
         models: [
           {
@@ -24,7 +24,7 @@ module.exports = {
       })
     ],
     get: [
-      addFilterByCurrentUser(),
+      //addFilterByCurrentUser(),
       addAssociations({
         models: [
           {

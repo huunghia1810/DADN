@@ -39,7 +39,7 @@ class cGasLeakConsumer {
         index: strData,
         createdBy: 1
       }, objDataNotify = {
-        content: `[Gas Leak] has new data: '${strData}'`,
+        content: `Gas Leak index: '${strData}'`,
         type: 'notify',
         createdBy: 1
       }
@@ -52,8 +52,17 @@ class cGasLeakConsumer {
     } else if(topic === this.arrTopics.gasdata) {
       const objData = {
         status: strData == 1 ? 'active': 'inactive',
+        createdBy: 1
+      }, objDataNotify = {
+        content: (strData == 1 ? `Gas Leak is enable` : `Gas Leak is disable`),
+        type: 'notify',
+        createdBy: 1
       }
       const arrRes = await this.app.service('gas-data').create(objData)
+
+      //create notification
+      await this.app.service('notifications').create(objDataNotify)
+
       return arrRes
 
       //check data exist

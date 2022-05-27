@@ -6,6 +6,7 @@ import Alert from './Alert'
 import Setting from './Setting'
 import Device from './Device'
 import GasLeak from './GasLeak'
+import GasData from './GasData'
 
 export default combineReducers({
     User,
@@ -14,4 +15,5 @@ export default combineReducers({
     Setting,
     Device,
     GasLeak,
+    GasData,
 })

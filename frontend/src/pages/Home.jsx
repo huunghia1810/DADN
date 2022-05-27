@@ -9,8 +9,10 @@ import { Card, Col, Row, Switch, Button, Table, Avatar } from 'antd'
 
 import ActionUser from '../actions/User'
 import ActionGasLeak from '../actions/GasLeak'
+import ActionGasData from '../actions/GasData'
 
 import * as constantUser from '../constants/User'
+import * as constantGasData from '../constants/GasData'
 
 import GasLeakChart from '../components/chart/GasLeak'
 
@@ -28,13 +30,17 @@ const Home = props => {
   const [arrMembers, setArrMembers] = useState([])
   const [gasLeakData, setGasLeakData] = useState([])
   const [gasLeakCategories, setGasLeakCategories] = useState([])
+  const [gasDataHistory, setGasDataHistory] = useState([])
+  const [gasLeakStatus, setGasLeakStatus] = useState(false)
 
   const User = useSelector(state => state.User) || {}
   const GasLeakStore = useSelector(state => state.GasLeak) || {}
+  const GasDataStore = useSelector(state => state.GasData) || {}
 
   useEffect(() => {
     dispatch(ActionUser.getUsers())
     dispatch(ActionGasLeak.getGasLeaks())
+    dispatch(ActionGasData.getGasData())
 
     feathersClient.service('gas-leak')
       .on('created', message => {
@@ -47,6 +53,17 @@ const Home = props => {
         _handleListenGasLeak(message)
       })
 
+    feathersClient.service('gas-data')
+      .on('created', message => {
+        _handleListenGasData(message)
+      })
+      .on('updated', message => {
+        _handleListenGasData(message)
+      })
+      .on('patched', message => {
+        _handleListenGasData(message)
+      })
+
   }, [])
 
   useEffect(() => {
@@ -57,11 +74,23 @@ const Home = props => {
     _setDataSeries()
   }, [GasLeakStore])
 
+  useEffect(() => {
+    _setDataLeakHistory()
+    _updateGasLeakStatusLatest()
+  }, [GasDataStore])
+
+  const _updateGasLeakStatusLatest = () => {
+    if (GasDataStore.listGasData.length) {
+      const itemLatest = GasDataStore.listGasData[0]
+      const gasLeakStatusIsEnable = itemLatest.status === constantGasData.STATUS.ACTIVE ? true : false
+      debugger
+      setGasLeakStatus(gasLeakStatusIsEnable)
+    }
+  }
   //--------------data section leak start------------
   const _handleListenGasLeak = message => {
     dispatch(ActionGasLeak.getGasLeaks())
   }
-
   const _setDataSeries = () => {
     if(GasLeakStore.listGasLeaks.length) {
       let arrGasLeakData = [],
@@ -112,56 +141,29 @@ const Home = props => {
 
   //--------------data section leak history start------------
   const columnsGasLeakHistory = [
-    {
-      title: 'Sensor',
-      dataIndex: 'sensor',
-      key: 'sensor',
-      width: '32%',
-    },
-    {
-      title: 'Status',
-      key: 'status',
-      dataIndex: 'status',
-    },
-    {
-      title: 'Time',
-      key: 'time',
-      dataIndex: 'time',
-    },
+    { title: 'Sensor', dataIndex: 'sensor', key: 'sensor', width: '32%' },
+    { title: 'Status', key: 'status', dataIndex: 'status' },
+    { title: 'Time', key: 'time', dataIndex: 'time' },
   ]
 
-  const arrGasLeakHistory = [
-    {
-      sensor: 'Gas',
-      status: '1',
-      time: '18-02-2022 13:34:12',
-    },
-    {
-      sensor: 'Gas',
-      status: '1',
-      time: '18-02-2022 13:34:12',
-    },
-    {
-      sensor: 'Gas',
-      status: '1',
-      time: '18-02-2022 13:34:12',
-    },
-    {
-      sensor: 'Gas',
-      status: '1',
-      time: '18-02-2022 13:34:12',
-    },
-    {
-      sensor: 'Gas',
-      status: '1',
-      time: '18-02-2022 13:34:12',
-    },
-    {
-      sensor: 'Gas',
-      status: '1',
-      time: '18-02-2022 13:34:12',
-    },
-  ]
+  const _handleListenGasData = message => {
+    dispatch(ActionGasData.getGasData())
+  }
+
+  const _setDataLeakHistory = () => {
+    if (GasDataStore.listGasData.length) {
+      let arrGasDataHistory = []
+      GasDataStore.listGasData.map(item => {
+        arrGasDataHistory.push({
+          sensor: 'Gas',
+          status: (item.status == constantGasData.STATUS.ACTIVE ? (<span className={'text-success'}>Active</span>) : (<span className={'text-danger'}>Inactive</span>)),
+          time: moment(item.createdAt).locale('en').format('DD/MM/YYYY hh:mm:ss a'),
+        })
+      })
+
+      setGasDataHistory(arrGasDataHistory)
+    }
+  }
   //--------------data section leak history end------------
 
   return (
@@ -171,16 +173,19 @@ const Home = props => {
           <Col xs={24} sm={24} md={12} lg={12} xl={14}>
             <Card bordered={false} className='criclebox device-status-section'>
               <Row className='device-row' gutter={[24, 0]}>
-                <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                   <Avatar
                     className='shape-avatar'
                     shape='square'
-                    size={128}
+                    size={350}
                     src={cooler}
                   ></Avatar>
-                  <Switch className='device-toggle' defaultChecked />
+                  <Switch className='device-toggle'
+                          checked={gasLeakStatus}
+                          disabled={true}
+                          defaultChecked={false} />
                 </Col>
-                <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+                {/*<Col xs={24} sm={24} md={12} lg={8} xl={8}>
                   <Avatar
                     className='shape-avatar'
                     shape='square'
@@ -197,9 +202,9 @@ const Home = props => {
                     src={broadcast}
                   ></Avatar>
                   <Switch className='device-toggle' defaultChecked />
-                </Col>
+                </Col>*/}
               </Row>
-              <Row className='device-row' gutter={[24, 0]}>
+              {/*<Row className='device-row' gutter={[24, 0]}>
                 <Col xs={24} sm={24} md={12} lg={8} xl={8}>
                   <Avatar
                     className='shape-avatar'
@@ -227,7 +232,7 @@ const Home = props => {
                   ></Avatar>
                   <Switch className='device-toggle' defaultChecked />
                 </Col>
-              </Row>
+              </Row>*/}
             </Card>
           </Col>
           <Col xs={24} sm={24} md={12} lg={12} xl={10} className='mb-24'>
@@ -265,15 +270,15 @@ const Home = props => {
                 className='header-solid h-full ant-invoice-card'
                 title={[<h6 className='font-semibold m-0'>Gas Leak History</h6>]}
                 extra={[
-                  <Button type='primary'>
+                  /*<Button type='primary'>
                     <span>View all</span>
-                  </Button>,
+                  </Button>,*/
                 ]}
             >
               <div className='table-responsive'>
                 <Table
                     columns={columnsGasLeakHistory}
-                    dataSource={arrGasLeakHistory}
+                    dataSource={gasDataHistory}
                     pagination={false}
                     className='ant-border-space'
                 />

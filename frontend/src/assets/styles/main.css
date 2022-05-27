@@ -3062,6 +3062,7 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 .device-status-section .device-row {
   padding-top: 20px;
   padding-bottom: 20px;
+  text-align: center;
 }
 
 .device-icon {
