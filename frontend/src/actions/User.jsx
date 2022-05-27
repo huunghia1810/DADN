@@ -73,6 +73,24 @@ class ActionUser {
             dispatch({type: constantUser.USER_AUTH_SIGN_OUT_SUCCESS})
         }
     }
+    getUsers(limit = 5) {
+        return function (dispatch) {
+            dispatch({type: constantUser.USER_GET_DATA_PROCESSING})
+            const query = {
+                query: {
+                    $sort: {id: -1},
+                    $limit: limit //default 5 newest users
+                }
+            }
+
+            feathersClient.service('users').find(query)
+              .then(response => {
+                  dispatch({type: constantUser.USER_GET_DATA_SUCCESS, payload: response})
+              }).catch(error => {
+                dispatch({type: constantUser.USER_GET_DATA_FAIL, payload: error.message})
+            })
+        }
+    }
 }
 
 export default new ActionUser()

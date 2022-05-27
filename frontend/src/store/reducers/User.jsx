@@ -4,6 +4,10 @@ import * as constantUser from '../../constants/User'
 const initialState = {
     fetching: false,
     authInfo: {},
+    listUsers: [],
+    total: 0,
+    limit: 0,
+    skip: 0,
     error: null,
 }
 
@@ -96,6 +100,37 @@ export default function reducer(state = initialState, action) {
                 error: action.payload,
             }
 
+        case constantUser.USER_GET_DATA_PROCESSING:
+            return {
+                ...state,
+                fetching: true,
+                listUsers: [],
+                total: 0,
+                limit: 0,
+                skip: 0,
+                error: null,
+            }
+        case constantUser.USER_GET_DATA_SUCCESS:
+            const { total, limit, skip, data, type } = action.payload
+            return {
+                ...state,
+                fetching: false,
+                listUsers: data,
+                totalUnread: total,
+                limitUnread: limit,
+                skipUnread: skip,
+                error: null,
+            }
+        case constantUser.USER_GET_DATA_FAIL:
+            return {
+                ...state,
+                fetching: false,
+                listUsers: [],
+                total: 0,
+                limit: 0,
+                skip: 0,
+                error: action.payload,
+            }
         default:
             return state
     }
