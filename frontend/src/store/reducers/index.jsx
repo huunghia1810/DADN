@@ -5,6 +5,7 @@ import Notification from './Notification'
 import Alert from './Alert'
 import Setting from './Setting'
 import Device from './Device'
+import GasLeak from './GasLeak'
 
 export default combineReducers({
     User,
@@ -12,4 +13,5 @@ export default combineReducers({
     Alert,
     Setting,
     Device,
+    GasLeak,
 })

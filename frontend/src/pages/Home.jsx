@@ -1,52 +1,82 @@
 import _ from 'lodash'
+import moment from 'moment'
 import {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {
-  Card,
-  Col,
-  Row,
-  Typography,
-  Switch,
-  Button, Table, Avatar,
-} from 'antd'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFan, faBullhorn, faTowerBroadcast, faVolumeHigh, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
 
-import {
-  RightOutlined,
-} from '@ant-design/icons'
-import Paragraph from 'antd/lib/typography/Paragraph'
+import feathersClient from './../feathersClient'
+
+import { Card, Col, Row, Switch, Button, Table, Avatar } from 'antd'
 
 import ActionUser from '../actions/User'
+import ActionGasLeak from '../actions/GasLeak'
 
 import * as constantUser from '../constants/User'
 
-import Echart from '../components/chart/EChart'
-import LineChart from '../components/chart/LineChart'
+import GasLeakChart from '../components/chart/GasLeak'
 
 import warning from '../assets/images/warning.png'
 import cooler from '../assets/images/cooler.png'
 import broadcast from '../assets/images/broadcast.png'
 import volume from '../assets/images/volume.png'
 import shield from '../assets/images/shield.png'
-import moment from 'moment'
 
 const { STATUS } = constantUser
 
 const Home = props => {
+
   const dispatch = useDispatch()
   const [arrMembers, setArrMembers] = useState([])
+  const [gasLeakData, setGasLeakData] = useState([])
+  const [gasLeakCategories, setGasLeakCategories] = useState([])
 
   const User = useSelector(state => state.User) || {}
+  const GasLeakStore = useSelector(state => state.GasLeak) || {}
 
   useEffect(() => {
     dispatch(ActionUser.getUsers())
+    dispatch(ActionGasLeak.getGasLeaks())
+
+    feathersClient.service('gas-leak')
+      .on('created', message => {
+        _handleListenGasLeak(message)
+      })
+      .on('updated', message => {
+        _handleListenGasLeak(message)
+      })
+      .on('patched', message => {
+        _handleListenGasLeak(message)
+      })
+
   }, [])
 
   useEffect(() => {
     _renderSectionMember()
   }, [User])
 
+  useEffect(() => {
+    _setDataSeries()
+  }, [GasLeakStore])
+
+  //--------------data section leak start------------
+  const _handleListenGasLeak = message => {
+    dispatch(ActionGasLeak.getGasLeaks())
+  }
+
+  const _setDataSeries = () => {
+    if(GasLeakStore.listGasLeaks.length) {
+      let arrGasLeakData = [],
+        arrGasLeakCategories = []
+      for(let i = GasLeakStore.listGasLeaks.length - 1; i >= 0; i--) {
+        const item = GasLeakStore.listGasLeaks[i]
+
+        arrGasLeakData.push(item.index || 0)
+        arrGasLeakCategories.push(moment(item.createdAt).locale('en').format('hh:mm a'))
+      }
+
+      setGasLeakData([...arrGasLeakData])
+      setGasLeakCategories([...arrGasLeakCategories])
+    }
+  }
 
   //--------------data section members start------------
   const _renderSectionMember = () => {
@@ -202,7 +232,7 @@ const Home = props => {
           </Col>
           <Col xs={24} sm={24} md={12} lg={12} xl={10} className='mb-24'>
             <Card bordered={false} className='criclebox h-full'>
-              <LineChart />
+              <GasLeakChart data={gasLeakData} categories={gasLeakCategories} title="Gas leak data" />
             </Card>
           </Col>
         </Row>

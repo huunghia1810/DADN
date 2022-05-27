@@ -97,6 +97,8 @@ class MqttAdapter {
     })
     this._connection.subscribe(listTopic)
 
+    console.log(`adafruit____: ${this.connectUrl} | ${this.clientId} | ${this.username} | ${this.password}`)
+
     this._connection.on('connect', () => {
       console.log('Connected')
 
@@ -108,9 +110,14 @@ class MqttAdapter {
       })*/
     })
 
+    //error
+    this._connection.on('error', function(e) {
+      console.log('Adafruit Error___________', e.message)
+    })
+
     //consume
     this._connection.on('message', function(topic, payload, packet) {
-      console.log(`Received______ topic | data: '${topic}' | '${topic}'`)
+      console.log(`Received______ topic | data: '${topic}' | '${payload}'`)
       self.callback(topic, payload)
     })
 

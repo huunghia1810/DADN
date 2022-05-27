@@ -38,24 +38,35 @@ class cGasLeakConsumer {
       const objData = {
         index: strData,
         createdBy: 1
+      }, objDataNotify = {
+        content: `[Gas Leak] has new data: '${strData}'`,
+        type: 'notify',
+        createdBy: 1
       }
       const arrRes = await this.app.service('gas-leak').create(objData)
+
+      //create notification
+      await this.app.service('notifications').create(objDataNotify)
+
       return arrRes
     } else if(topic === this.arrTopics.gasdata) {
-      //check data exist
-      const dataGasData = await this.app.service('gas-data').find({query: {
-          id: {$gt: 0}
-        }})
       const objData = {
         status: strData == 1 ? 'active': 'inactive',
       }
+      const arrRes = await this.app.service('gas-data').create(objData)
+      return arrRes
+
+      //check data exist
+      /*const dataGasData = await this.app.service('gas-data').find({query: {
+          id: {$gt: 0}
+        }})
       if(dataGasData.data.length) { //exist -> update
         const arrRes = await this.app.service('gas-data').patch(dataGasData.data[0].id, objData)
         return arrRes
       } else { //not exist -> create
         const arrRes = await this.app.service('gas-data').create(objData)
         return arrRes
-      }
+      }*/
     }
   }
 
