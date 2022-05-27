@@ -8,28 +8,28 @@ db
       examples: allowNull
       validate attributes: https://sequelize.org/master/manual/validations-and-constraints.html
 
-feathersJs script:
+########## feathersJs script:
   install feathers cli: npm install -g feathers-cli
   generate service: feathers generate service
 
-feathersJs permission:
+########## feathersJs permission:
   https://github.com/feathersjs-ecosystem/feathers-permissions#permission-format
 
-check & kill used port
+########## check & kill used port
   lsof -n -i4TCP:3030
   kill -9 PID
 
-check version centos
+########## check version centos
   cat /etc/*elease
 
-install docker on centos 7
+########## install docker on centos 7
   https://docs.docker.com/engine/install/centos/
 
-feathersJs dockerize
-  https://docs.feathersjs.com/cookbook/deploy/docker.html#create-an-app
+########## deploy FE react
+    npm run build
 
-  docker build -t gas-system-management-image .
-  docker run -d -p 3445:3445 --name gas-system-management-container gas-system-management-image
+########## deploy BE feathersJs dockerize
+  https://docs.feathersjs.com/cookbook/deploy/docker.html#create-an-app
 
   docker ps -a
   docker stop docker_id
@@ -38,18 +38,21 @@ feathersJs dockerize
   docker image ls
   docker image rm gas-system-management-image
 
-open port
+  docker build -t gas-system-management-image .
+  docker run -d -p 3445:3445 --name gas-system-management-container gas-system-management-image
+
+########## open port
   https://hocvps.com/kiem-tra-va-mo-port-vps-tren-centos/
   https://hocvps.com/iptables/
   $ iptables -I INPUT -p tcp -m tcp --dport 3445 -j ACCEPT
 
-download file:
+########## download file:
   https://docs.feathersjs.com/api/express.html#custom-service-middleware
   https://github.com/feathersjs/feathers/issues/1581
   https://stackoverflow.com/questions/55132760/creating-excel-file-and-writing-to-it-with-exceljs
   https://codesandbox.io/s/yq7r1oror1?file=/App.js:517-528
 
-Adafruit with NodeJS (use library mtqq):
+########## Adafruit with NodeJS (use library mtqq):
   docs: https://learn.adafruit.com/adafruit-io/mqtt-api?view=all#mqtt-api
   quick notes:
     connectUrl = `mqtt://io.adafruit.com`
