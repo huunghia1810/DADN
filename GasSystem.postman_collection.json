@@ -1,0 +1,1062 @@
+{
+	"info": {
+		"_postman_id": "b9b887d7-78db-4685-ab16-6c4785e3f4e2",
+		"name": "GasSystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2651503"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "SignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"normaluser1@gmail.com\",\n    \"password\": \"123456\",\n\t\"fullName\": \"Normal User 1\",\n\t\"dateOfBirth\": \"2018-03-18T17:45:12Z\",\n    \"phone\": \"0909094573\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/users",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"123456\",\n  \"oldPassword\": \"123455\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/user-change-password",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"user-change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"fullName\": \"Nghia NH\",\n\t\"dateOfBirth\": \"2018-03-18T17:45:12Z\",\n    \"phone\": \"0909093673\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/users/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/users",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/users/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Devices",
+			"item": [
+				{
+					"name": "Get List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/devices",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/devices/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"devices",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"id\": 1,\n        \"name\": \"Device 2\",\n        \"code\": \"device_11\",\n        \"type\": \"LED\",\n        \"status\": \"active\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/devices",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Device 1.1\",\n    \"code\": \"device_11\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/devices/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"devices",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GasLeak",
+			"item": [
+				{
+					"name": "Get List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/gas-leak",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"gas-leak"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/gas-leak/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"gas-leak",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"index\": 4.93\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/gas-leak",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"gas-leak"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"index\": \"5.99\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/gas-leak/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"gas-leak",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Adafruit",
+			"item": [
+				{
+					"name": "Gasdata",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[0]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/adafruit?action=producer&topic=gasdata",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"adafruit"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "producer"
+								},
+								{
+									"key": "topic",
+									"value": "gasleak",
+									"description": "gasleak  or gasdata",
+									"disabled": true
+								},
+								{
+									"key": "topic",
+									"value": "gasdata"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GasLeak",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[5.64]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/adafruit?action=producer&topic=gasleak",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"adafruit"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "producer"
+								},
+								{
+									"key": "topic",
+									"value": "gasleak",
+									"description": "gasleak  or gasdata"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"index\": \"5.99\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/gas-leak/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"gas-leak",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GasData",
+			"item": [
+				{
+					"name": "Get List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{dlocal}}/gas-data",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"gas-data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/gas-data/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"gas-data",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"active\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/gas-data",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"gas-data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"inactive\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/gas-data/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"gas-data",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/notifications",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/notifications/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"notifications",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"This notification content 1\",\n    \"type\": \"notify\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/notifications",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"This notification content 1.1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/notifications/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"notifications",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isDeleted\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/notifications/28",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"notifications",
+								"28"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Settings",
+			"item": [
+				{
+					"name": "Get List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/settings",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/settings/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"settings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"fanMode\": 1,\n    \"sendSMS\": 1,\n    \"ledBuzz\": 0,\n    \"fanSpeed\": 20,\n    \"buzzLoudness\": 30\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/settings",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fanSpeed\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/settings/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"settings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UserRoles",
+			"item": [
+				{
+					"name": "Get List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{dlocal}}/user-roles",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"user-roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"roles\": \"[\\\"admin\\\",\\\"*\\\",\\\"manager:*\\\",\\\"*:find\\\",\\\"help:get\\\"]\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/user-roles",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"user-roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"roles\": \"[\\\"admin\\\",\\\"*\\\",\\\"manager:*\\\",\\\"*:find\\\",\\\"help:get\\\"]\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dlocal}}/user-roles/2",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"user-roles",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "Gas Sensor Data Download Buffer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tlocal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{dlocal}}/gas-sensor-data-download/1",
+							"host": [
+								"{{dlocal}}"
+							],
+							"path": [
+								"gas-sensor-data-download",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"strategy\": \"local\",\n    \"email\": \"huunghia1810@gmail.com\",\n\t\"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{dlocal}}/authentication",
+					"host": [
+						"{{dlocal}}"
+					],
+					"path": [
+						"authentication"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
